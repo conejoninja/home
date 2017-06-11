@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Home Automation project</title>
-    <link>https://conejoninja.github.io/home-docs/categories/</link>
+    <link>https://conejoninja.github.io/home/categories/</link>
     <description>Recent content in Categories on Home Automation project</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Released under the MIT license</copyright>
     
-	<atom:link href="https://conejoninja.github.io/home-docs/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://conejoninja.github.io/home/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

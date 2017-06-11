@@ -1,4 +1,4 @@
-baseurl = "https://conejoninja.github.io/home-docs/"
+baseurl = "https://conejoninja.github.io/home/"
 languageCode = "en-us"
 title = "Home Automation project"
 theme = "hugo-material-docs"

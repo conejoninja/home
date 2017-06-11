@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home Automation project</title>
-    <link>https://conejoninja.github.io/home-docs/</link>
+    <link>https://conejoninja.github.io/home/</link>
     <description>Recent content on Home Automation project</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Released under the MIT license</copyright>
     <lastBuildDate>Wed, 09 Mar 2016 00:11:02 +0100</lastBuildDate>
     
-	<atom:link href="https://conejoninja.github.io/home-docs/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://conejoninja.github.io/home/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Getting started</title>
-      <link>https://conejoninja.github.io/home-docs/getting-started/</link>
+      <link>https://conejoninja.github.io/home/getting-started/</link>
       <pubDate>Wed, 09 Mar 2016 00:11:02 +0100</pubDate>
       
-      <guid>https://conejoninja.github.io/home-docs/getting-started/</guid>
+      <guid>https://conejoninja.github.io/home/getting-started/</guid>
       <description>Installation Installing Hugo Hugo itself is just a single binary without dependencies on expensive runtimes like Ruby, Python or PHP and without dependencies on any databases. You just need to download the latest version. For more information read the official installation guides.
 Let&amp;rsquo;s make sure Hugo is set up as expected. You should see a similar version number in your terminal:
 hugo version # Hugo Static Site Generator v0.15 BuildDate: 2016-01-03T12:47:47+01:00  Installing Material Next, assuming you have Hugo up and running the hugo-material-docs theme can be installed with git:</description>
@@ -25,10 +25,10 @@ hugo version # Hugo Static Site Generator v0.15 BuildDate: 2016-01-03T12:47:47+0
     
     <item>
       <title>Adding content</title>
-      <link>https://conejoninja.github.io/home-docs/adding-content/</link>
+      <link>https://conejoninja.github.io/home/adding-content/</link>
       <pubDate>Wed, 09 Mar 2016 19:56:50 +0100</pubDate>
       
-      <guid>https://conejoninja.github.io/home-docs/adding-content/</guid>
+      <guid>https://conejoninja.github.io/home/adding-content/</guid>
       <description>Hello world Let&amp;rsquo;s create our first content file for your documentation. Open a terminal and add the following command for each new file you want to add. Replace &amp;lt;section-name&amp;gt; with a general term that describes your document in detail.
 hugo new &amp;lt;section-name&amp;gt;/filename.md  Visitors of your website will find the final document under www.example.com/&amp;lt;section-name&amp;gt;/filename/.
 Since it&amp;rsquo;s possible to have multiple content files in the same section I recommend to create at least one index.</description>
@@ -36,20 +36,20 @@ Since it&amp;rsquo;s possible to have multiple content files in the same section
     
     <item>
       <title>Roadmap</title>
-      <link>https://conejoninja.github.io/home-docs/roadmap/</link>
+      <link>https://conejoninja.github.io/home/roadmap/</link>
       <pubDate>Wed, 09 Mar 2016 20:08:11 +0100</pubDate>
       
-      <guid>https://conejoninja.github.io/home-docs/roadmap/</guid>
+      <guid>https://conejoninja.github.io/home/roadmap/</guid>
       <description>Quo vadis? The port of the original Material theme has replicated nearly all of its features. A few are still missing but I&amp;rsquo;ve good news: the Hugo community is actively working on this issues. Maybe with the next release of Hugo we can abandon this list. Stay tuned.
 Localization Currently, it is possible to collect all strings in a single place for easy customization. However, this only enables you to define all strings in a single language.</description>
     </item>
     
     <item>
       <title>License</title>
-      <link>https://conejoninja.github.io/home-docs/license/</link>
+      <link>https://conejoninja.github.io/home/license/</link>
       <pubDate>Wed, 09 Mar 2016 20:10:46 +0100</pubDate>
       
-      <guid>https://conejoninja.github.io/home-docs/license/</guid>
+      <guid>https://conejoninja.github.io/home/license/</guid>
       <description>Copyright &amp;copy; 2016 Digitalcraftsman digitalcraftsman@protonmail.com
 Copyright &amp;copy; 2016 Martin Donath martin.donath@squidfunk.com
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &amp;ldquo;Software&amp;rdquo;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</description>
@@ -57,10 +57,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
     
     <item>
       <title>Home Automation project</title>
-      <link>https://conejoninja.github.io/home-docs/</link>
+      <link>https://conejoninja.github.io/home/</link>
       <pubDate>Sun, 11 Jun 2017 18:28:13 +0100</pubDate>
       
-      <guid>https://conejoninja.github.io/home-docs/</guid>
+      <guid>https://conejoninja.github.io/home/</guid>
       <description>Amateur project to automate a few task in my home and communicate with some IoT devices. I used a mix of languages, frameworks and platforms. I will try to document as much as possible, but remember, this is an amateur project.
 Global view In order to interact together, devices communicates with each other through a MQTT server using a custom JSON-based protocol. Besides the devices, there are a few &amp;ldquo;modules&amp;rdquo; too, those modules are programs that consume the MQTT messages, perform actions based of information and allow human interaction (Web, App).</description>
     </item>
