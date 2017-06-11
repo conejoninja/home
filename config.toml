@@ -5,6 +5,7 @@ theme = "hugo-material-docs"
 metadataformat = "yaml"
 canonifyurls = true
 googleAnalytics = ""
+publishDir = "."
 
 
 [params]
