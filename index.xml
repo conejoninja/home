@@ -7,19 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Released under the MIT license</copyright>
-    <lastBuildDate>Wed, 09 Mar 2016 20:08:11 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 12 Jun 2017 17:45:11 +0100</lastBuildDate>
     
 	<atom:link href="https://conejoninja.github.io/home/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Roadmap</title>
+      <title>Protocol</title>
       <link>https://conejoninja.github.io/home/protocol/</link>
-      <pubDate>Wed, 09 Mar 2016 20:08:11 +0100</pubDate>
+      <pubDate>Mon, 12 Jun 2017 17:45:11 +0100</pubDate>
       
       <guid>https://conejoninja.github.io/home/protocol/</guid>
-      <description>Quo vadis? The port of the original Material theme has replicated nearly all of its features. A few are still missing but I&amp;rsquo;ve good news: the Hugo community is actively working on this issues. Maybe with the next release of Hugo we can abandon this list. Stay tuned.
-Localization Currently, it is possible to collect all strings in a single place for easy customization. However, this only enables you to define all strings in a single language.</description>
+      <description>Simple protocol to discover and communicate with IoT devices on a network. The devices communicate with each other through the same central server(s) (a single server or a mesh), that may or may not be in the same local network. This makes possible the communication of devices in different physical networks.
+Discovery of devices Devices that join the network will broadcast their description. The message will be send to the discovery channel.</description>
     </item>
     
     <item>
