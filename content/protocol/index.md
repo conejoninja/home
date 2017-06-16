@@ -1,7 +1,7 @@
 ---
 date: 2017-06-12T17:45:11+01:00
 title: Protocol
-weight: 30
+weight: 20
 ---
 
 Simple protocol to discover and communicate with IoT devices on a network. The devices communicate with each other through the same central server(s) (a single server or a mesh), that may or may not be in the same local network. This makes possible the communication of devices in different physical networks.

@@ -9,18 +9,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Home Automation project</title>
+    <title>Rabbit food dispenser - Home Automation project</title>
     <meta name="generator" content="Hugo 0.21" />
 
     
     <meta name="description" content="Home Automation system.">
     
-    <link rel="canonical" href="https://conejoninja.github.io/home/">
+    <link rel="canonical" href="https://conejoninja.github.io/home/devices/food01/">
     
     <meta name="author" content="conejoninja">
     
 
-    <meta property="og:url" content="https://conejoninja.github.io/home/">
+    <meta property="og:url" content="https://conejoninja.github.io/home/devices/food01/">
     <meta property="og:title" content="Home Automation project">
     <meta property="og:image" content="https://conejoninja.github.io/home/images/logo.png">
     <meta name="apple-mobile-web-app-title" content="Home Automation project">
@@ -69,9 +69,6 @@
     <script src="https://conejoninja.github.io/home/javascripts/modernizr.js"></script>
 
     
-    <link href="https://conejoninja.github.io/home/index.xml" rel="alternate" type="application/rss+xml" title="Home Automation project" />
-    <link href="https://conejoninja.github.io/home/index.xml" rel="feed" type="application/rss+xml" title="Home Automation project" />
-    
 
   </head>
   <body class="palette-primary-blue-grey palette-accent-teal">
@@ -100,7 +97,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Home Automation project
+        Rabbit food dispenser
       </div>
     </div>
 
@@ -266,52 +263,154 @@
 
 	<article class="article">
 		<div class="wrapper">
-			
-				<h1>Home Automation project </h1>
-
-				
-
-<p>Amateur project to automate a few task in my home and communicate with some IoT devices. I used a mix of languages, frameworks and platforms. I will try to document as much as possible, but remember, this is an amateur project.</p>
-
-<h2 id="global-view">Global view</h2>
-
-<p>In order to interact together, devices communicates with each other through a MQTT server using a custom JSON-based protocol. Besides the devices, there are a few &ldquo;modules&rdquo; too, those modules are programs that consume the MQTT messages, perform actions based of information and allow human interaction (Web, App).</p>
-
-<p><img src="https://conejoninja.github.io/home/images/diagram.png" alt="Global view" /></p>
-
-<p>Devices on the left size of the image (rover, food, device x) are connected to through wifi or ethernet to the home network. Modules on the right (logger, cc, dashboard) reside in an external server along with the MQTT server, but they could live in a Raspberry Pi or similar inside the home network.</p>
-
-<h2 id="protocol">Protocol</h2>
-
-<p>I decided to created my own protocol sinces I didn&rsquo;t find any that suits my needs and was easy to use. The protocol is best described at the <a href="protocol/">protocol section</a>.</p>
-
-<h2 id="mqtt-server">MQTT server</h2>
-
-<p>For the MQTT server I choose to use <a href="https://mosquitto.org/">Mosquitto</a> inside a <a href="http://docker.com/">Docker</a> running on a external server.</p>
-
-<h2 id="logger">Logger</h2>
-
-<p>Logger is running program that listen to everything on the network and saves the important information (sensor data, events and devices&rsquo; descriptions) to a database, for later consumption and stats. Logger is written in Go.</p>
-
-<h2 id="database">Database</h2>
-
-<p>For the database I choose to use <a href="https://github.com/dgraph-io/badger">Badger</a>, Go-native key-value database.</p>
-
-<h2 id="command-and-control-cc">Command and Control (CC)</h2>
-
-<p>Here is where the real magic happens, Go program that automates tasks based on the information stored in the database, such as if it&rsquo;s too hot, switch on the fan.</p>
-
-<h2 id="dashboard-api">Dashboard / API</h2>
-
-<p>The dashboard/API to consume the information off of the database and show some nice charts to the users (web, mobile app) and allow them to manually perform actions or request additional data.</p>
-
-<h2 id="devices">Devices</h2>
-
-<h3 id="food-01">Food-01</h3>
-
-<p>Food-01 is a rabbit-food automatic dispenser. It dispenses food twice a day, small quantity on breakfast and a bigger one at dinner time. It communicates the status, if there was any problem during its operation. It accepts an user command to dispense extra food at any given time. It also sends temperature/humidity</p>
+			<h1>Rabbit food dispenser </h1>
 
 			
+
+<p>IoT enabled rabbit food dispenser, automatic and controllable via Internet.</p>
+
+<p><strong>Github repository:</strong> <a href="https://github.com/conejoninja/home_food">https://github.com/conejoninja/home_food</a></p>
+
+<p><img src="https://conejoninja.github.io/home/images/food0101.jpg" alt="rabbit food dispenser" title="Rabbit food 01" /></p>
+
+<h2 id="idea-and-motivation">Idea and motivation</h2>
+
+<p>The main idea was to be able to feed these two little rascals even when I&rsquo;m not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don&rsquo;t do well on hot weather.</p>
+
+<p>The dispenser will wake up each 15 minutes, send the temperature and humidity to a server and check if it&rsquo;s time to feed the monsters. It&rsquo;s as autonomous as possible (it will feed them if it&rsquo;s time, even if there&rsquo;s no internet connection). The dispenser will notify if there&rsquo;s a problem with the temperature and humidity readings or if it&rsquo;s jammed. It could receive a command to dispense extra food even if it&rsquo;s not the time to.</p>
+
+<p><img src="https://conejoninja.github.io/home/images/rabbits.jpg" alt="little rascals" title="Baloo &amp; Moneypenny" /></p>
+
+<h2 id="components">Components</h2>
+
+<ul>
+<li>ESP12F (or any other similar board)</li>
+<li>DS1307 AT24C32 (DS1307 module with 32K EEPROM)</li>
+<li>Temperature &amp; humidity DTH11 sensor (or any DHTXX)</li>
+<li>L293B / L293D half-bridge</li>
+<li>DC motor (one of those cheap geared yellow motors)</li>
+<li>Rotary encoder</li>
+<li>DC-DC buck converter with 3.3V output (YL-46, AMS1117 based)</li>
+<li>2x 10K ohm resistors</li>
+<li>4x 1N4007</li>
+<li>3D printed parts from STL files</li>
+<li>6V power source</li>
+<li>Some wire</li>
+</ul>
+
+<h2 id="the-circuit">The circuit</h2>
+
+<p><img src="https://github.com/conejoninja/home_food/raw/master/circuit.png" alt="the circuit" title="The circuit" /></p>
+
+<p>The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there&rsquo;s a jam in the dispenser. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.</p>
+
+<p>Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn&rsquo;t find Fritzing components for them.</p>
+
+<h3 id="connections">Connections</h3>
+
+<p>In case the diagram is not clear enough, here are the connections of the ESP12F.</p>
+
+<table>
+<thead>
+<tr>
+<th>ESP12F pins</th>
+<th>Component</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>RST</td>
+<td>ESP12F GPIO16 (to be able to deepsleep)</td>
+</tr>
+
+<tr>
+<td>ADC</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>CH_PD / EN</td>
+<td>3.3V</td>
+</tr>
+
+<tr>
+<td>GPIO16</td>
+<td>ESP12F RST</td>
+</tr>
+
+<tr>
+<td>GPIO14</td>
+<td>DHT11 data pin</td>
+</tr>
+
+<tr>
+<td>GPIO12</td>
+<td>Rotary encoder pin A</td>
+</tr>
+
+<tr>
+<td>GPIO13</td>
+<td>Rotary encoder pin B</td>
+</tr>
+
+<tr>
+<td>VCC</td>
+<td>3.3V (from DC-DC converter)</td>
+</tr>
+
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+
+<tr>
+<td>GPIO15</td>
+<td>GND</td>
+</tr>
+
+<tr>
+<td>GPIO2</td>
+<td>L293B IN2</td>
+</tr>
+
+<tr>
+<td>GPIO0</td>
+<td>3.3V</td>
+</tr>
+
+<tr>
+<td>GPIO4</td>
+<td>RTC SDA</td>
+</tr>
+
+<tr>
+<td>GPIO5</td>
+<td>RTC SCL</td>
+</tr>
+
+<tr>
+<td>RXD</td>
+<td>L293B IN1</td>
+</tr>
+
+<tr>
+<td>TXD</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+<p>Due to the limitations of the ESP12F, the RXD pin is used to drive the motor. This will cause some issues is using the Serial to debug the code (it&rsquo;s always on). I tried using pins GPIO9 and GPIO10 that are usually not in the adapter plate, but there are additional limitation using them, and I couldn&rsquo;t make them work. I added a flag in the code to enable/disable the motor/Serial. You can not use the Serial and the motor at the same time, unless you change the pins.</p>
+
+
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/4CCGwA13kiI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+ </div>
+
+
+<p>WORK IN PROGRESS</p>
+
 
 			<aside class="copyright" role="note">
 				
@@ -326,23 +425,37 @@
 			<footer class="footer">
 				
 
-
-
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
+  
+      <a href="https://conejoninja.github.io/home/devices/" title="Devices">
+        <span class="direction">
+          Previous
+        </span>
+        <div class="page">
+          <div class="button button-previous" role="button" aria-label="Previous">
+            <i class="icon icon-back"></i>
+          </div>
+          <div class="stretch">
+            <div class="title">
+              Devices
+            </div>
+          </div>
+        </div>
+      </a>
+  
   </div>
 
-  
-  
   <div class="next">
-      <a href="https://conejoninja.github.io/home/tags/" title="Tags">
+  
+      <a href="https://conejoninja.github.io/home/protocol/" title="Protocol">
         <span class="direction">
           Next
         </span>
         <div class="page">
           <div class="stretch">
             <div class="title">
-              Tags
+              Protocol
             </div>
           </div>
           <div class="button button-next" role="button" aria-label="Next">
@@ -350,8 +463,11 @@
           </div>
         </div>
       </a>
+  
   </div>
 </nav>
+
+
 
 
 

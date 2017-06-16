@@ -61,8 +61,3 @@ publishDir = "."
 	url    = "protocol/"
 	weight = 20
 
-[[menu.main]]
-	name   = "Dockers"
-	url    = "dockers/"
-	weight = 30
-
