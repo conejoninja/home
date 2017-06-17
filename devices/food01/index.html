@@ -292,7 +292,7 @@
 
 <p><strong>Github repository:</strong> <a href="https://github.com/conejoninja/home_food">https://github.com/conejoninja/home_food</a></p>
 
-<p><img src="/images/food/food0101.jpg" alt="rabbit food dispenser" title="Rabbit food 01" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/food0101.jpg" alt="rabbit food dispenser" title="Rabbit food 01" /></p>
 
 <h2 id="idea-and-motivation">Idea and motivation</h2>
 
@@ -300,7 +300,7 @@
 
 <p>The dispenser will wake up each 15 minutes, send the temperature and humidity to a server and check if it&rsquo;s time to feed the monsters. It&rsquo;s as autonomous as possible (it will feed them if it&rsquo;s time, even if there&rsquo;s no internet connection). The dispenser will notify if there&rsquo;s a problem with the temperature and humidity readings or if it&rsquo;s jammed. It could receive a command to dispense extra food even if it&rsquo;s not the time to.</p>
 
-<p><img src="/images/rabbits.jpg" alt="little rascals" title="Baloo &amp; Moneypenny" /></p>
+<p><img src="https://conejoninja.github.io/home//images/rabbits.jpg" alt="little rascals" title="Baloo &amp; Moneypenny" /></p>
 
 <h2 id="components">Components</h2>
 
@@ -430,33 +430,33 @@
 
 <p>For the first design I used a 360 servo motor I had lying around, it turns out it didn&rsquo;t have enough force and jams from time to time. I ended up using one of the <em>famously cheap</em> yellow dc motors used in several robot kits. These motors take from 3V to 6V, and have enough force for our purpose.</p>
 
-<p><img src="/images/food/motor1.jpg" alt="dc motor" title="dc motor" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/motor1.jpg" alt="dc motor" title="dc motor" /></p>
 
 <p>There&rsquo;s a small bump on one side of the motor enclosure, that side is the good one. The other is attached via a smooth rod and can get loose after a while.</p>
 
-<p><img src="/images/food/motor2.jpg" alt="dc motor" title="dc motor" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/motor2.jpg" alt="dc motor" title="dc motor" /></p>
 
 <p>At code level, to avoid jams we move forward the motor a few miliseconds and then a little bit backwards, we repeat this a few times each time we need to dispense some food. In the case a jam happens (very rare, but it does) and avoid overheating of the motor, we limit the number of times we try to move the motor. If it failed to dispense the desired amount of food, we emit an alert and try to dispense next time we wake up (we don&rsquo;t change the alarm). If we succeed with our task, we set a new alarm for the next day.</p>
 
 <p>To control the motor we use a <em>H-bridge</em> with the L293B, you could use a L293D or any other similar component.</p>
 
-<p><img src="/images/food/hbridge.jpg" alt="h bridge" title="h bridge" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/hbridge.jpg" alt="h bridge" title="h bridge" /></p>
 
 <h2 id="rotary-encoder">Rotary encoder</h2>
 
-<p><img src="/images/food/rotary.encoder.jpg" alt="rotary encoder" title="rotary encoder" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/rotary.encoder.jpg" alt="rotary encoder" title="rotary encoder" /></p>
 
 <p>To control if the dispenser is jammed or how much food is already served we&rsquo;ll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn&rsquo;t support them, but it doesn&rsquo;t matter to us since we&rsquo;re using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check <a href="https://www.arduino.cc/en/Reference/AttachInterrupt">this table</a> for more information.</p>
 
 <h2 id="dht11-temperature-and-humidity-sensor">DHT11 - Temperature and humidity sensor</h2>
 
-<p><img src="/images/food/dht11.jpg" alt="dht11" title="dht11" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/dht11.jpg" alt="dht11" title="dht11" /></p>
 
 <p>DHT11, DHT22 or DHT21, any of them will work fine. They are cheap, being the DHT11 the cheapest among them, work well on 3.3V and 5V. We&rsquo;ll take 10 readings and calculate the average of both, temperature and humidity, to minimize wrong readings. Some of those readings, the first ones, may fail because the sensor needs to <em>warm up</em>, waiting 1 second between readings allow use to have at least a few good samples.</p>
 
 <h2 id="ds1307-at24c32-rtc-clock-with-eeprom-memory">DS1307 AT24C32 - RTC Clock with EEPROM memory</h2>
 
-<p><img src="/images/food/ds1307at24c32.jpg" alt="rtc clock" title="RTC Clock" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/ds1307at24c32.jpg" alt="rtc clock" title="RTC Clock" /></p>
 
 <p>We want to keep track of the time to be able to use the <em>alarms</em> and serve food whenever it&rsquo;s time to. We&rsquo;ll use the memory to know if the last time we failed and need to serve food again. Another possibility is to use the network time, but if the wifi is down for whatever reason we&rsquo;ll end up without a valid time.</p>
 

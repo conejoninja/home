@@ -15,13 +15,13 @@ Amateur project to automate a few task in my home and communicate with some IoT 
 In order to interact together, devices communicates with each other through a MQTT server using a custom JSON-based protocol. Besides the devices, there are a few "modules" too, those modules are programs that consume the MQTT messages, perform actions based of information and allow human interaction (Web, App).
 
 
-![Global view](/images/diagram.png)
+![Global view](https://conejoninja.github.io/home/images/diagram.png)
 
 Devices on the left size of the image (rover, food, device x) are connected to through wifi or ethernet to the home network. Modules on the right (logger, cc, dashboard) reside in an external server along with the MQTT server, but they could live in a Raspberry Pi or similar inside the home network.
 
 ## Protocol
 
-I decided to created my own protocol sinces I didn't find any that suits my needs and was easy to use. The protocol is best described at the [protocol section](protocol/).
+I decided to created my own protocol sinces I didn't find any that suits my needs and was easy to use. The protocol is best described at the [protocol section](https://conejoninja.github.io/home/protocol/).
 
 
 ## MQTT server

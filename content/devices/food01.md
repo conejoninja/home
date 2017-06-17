@@ -12,7 +12,7 @@ IoT enabled rabbit food dispenser, automatic and controllable via Internet.
 
 **Github repository:** https://github.com/conejoninja/home_food
 
-![rabbit food dispenser](/images/food/food0101.jpg "Rabbit food 01")
+![rabbit food dispenser](https://conejoninja.github.io/home/images/food/food0101.jpg "Rabbit food 01")
 
 
 
@@ -22,7 +22,7 @@ The main idea was to be able to feed these two little rascals even when I'm not 
 
 The dispenser will wake up each 15 minutes, send the temperature and humidity to a server and check if it's time to feed the monsters. It's as autonomous as possible (it will feed them if it's time, even if there's no internet connection). The dispenser will notify if there's a problem with the temperature and humidity readings or if it's jammed. It could receive a command to dispense extra food even if it's not the time to.
 
-![little rascals](/images/rabbits.jpg "Baloo & Moneypenny")
+![little rascals](https://conejoninja.github.io/home//images/rabbits.jpg "Baloo & Moneypenny")
 
 
 
@@ -82,13 +82,13 @@ Due to the limitations of the ESP12F, the RXD pin is used to drive the motor. Th
 
 For the first design I used a 360 servo motor I had lying around, it turns out it didn't have enough force and jams from time to time. I ended up using one of the *famously cheap* yellow dc motors used in several robot kits. These motors take from 3V to 6V, and have enough force for our purpose.
 
-![dc motor](/images/food/motor1.jpg "dc motor")
+![dc motor](https://conejoninja.github.io/home/images/food/motor1.jpg "dc motor")
 
 
 There's a small bump on one side of the motor enclosure, that side is the good one. The other is attached via a smooth rod and can get loose after a while.
 
 
-![dc motor](/images/food/motor2.jpg "dc motor")
+![dc motor](https://conejoninja.github.io/home/images/food/motor2.jpg "dc motor")
 
 
 At code level, to avoid jams we move forward the motor a few miliseconds and then a little bit backwards, we repeat this a few times each time we need to dispense some food. In the case a jam happens (very rare, but it does) and avoid overheating of the motor, we limit the number of times we try to move the motor. If it failed to dispense the desired amount of food, we emit an alert and try to dispense next time we wake up (we don't change the alarm). If we succeed with our task, we set a new alarm for the next day.
@@ -97,26 +97,26 @@ At code level, to avoid jams we move forward the motor a few miliseconds and the
  To control the motor we use a *H-bridge* with the L293B, you could use a L293D or any other similar component. 
  
  
-![h bridge](/images/food/hbridge.jpg "h bridge") 
+![h bridge](https://conejoninja.github.io/home/images/food/hbridge.jpg "h bridge") 
  
  
 ## Rotary encoder
 
-![rotary encoder](/images/food/rotary.encoder.jpg "rotary encoder")
+![rotary encoder](https://conejoninja.github.io/home/images/food/rotary.encoder.jpg "rotary encoder")
 
 To control if the dispenser is jammed or how much food is already served we'll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn't support them, but it doesn't matter to us since we're using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check [this table](https://www.arduino.cc/en/Reference/AttachInterrupt) for more information.  
 
 
 ## DHT11 - Temperature and humidity sensor
 
-![dht11](/images/food/dht11.jpg "dht11")
+![dht11](https://conejoninja.github.io/home/images/food/dht11.jpg "dht11")
 
 DHT11, DHT22 or DHT21, any of them will work fine. They are cheap, being the DHT11 the cheapest among them, work well on 3.3V and 5V. We'll take 10 readings and calculate the average of both, temperature and humidity, to minimize wrong readings. Some of those readings, the first ones, may fail because the sensor needs to *warm up*, waiting 1 second between readings allow use to have at least a few good samples.
 
 
 ## DS1307 AT24C32 - RTC Clock with EEPROM memory
 
-![rtc clock](/images/food/ds1307at24c32.jpg "RTC Clock")
+![rtc clock](https://conejoninja.github.io/home/images/food/ds1307at24c32.jpg "RTC Clock")
 
 We want to keep track of the time to be able to use the *alarms* and serve food whenever it's time to. We'll use the memory to know if the last time we failed and need to serve food again. Another possibility is to use the network time, but if the wifi is down for whatever reason we'll end up without a valid time.
 
