@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "Home Automation project"
 theme = "hugo-material-docs"
 metadataformat = "yaml"
-canonifyurls = true
+canonifyurls = false
 googleAnalytics = ""
 publishDir = "."
 
@@ -48,7 +48,7 @@ publishDir = "."
 
 [[menu.main]]
 	name   = "Home"
-	url    = "/"
+	url    = ""
 	weight = 1
 
 [[menu.main]]

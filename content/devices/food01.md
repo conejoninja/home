@@ -5,6 +5,7 @@ weight: 10
 menu:
     main:
         parent: devices
+        url: devices/food01/
 ---
 
 IoT enabled rabbit food dispenser, automatic and controllable via Internet. 

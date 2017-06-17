@@ -2,7 +2,7 @@
 date: 2017-06-11T18:28:13+01:00
 title: Home Automation project
 type: index
-weight: 0
+weight: 90
 ---
 
 Amateur project to automate a few task in my home and communicate with some IoT devices. I used a mix of languages, frameworks and platforms. I will try to document as much as possible, but remember, this is an amateur project. 
