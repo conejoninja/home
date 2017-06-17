@@ -2,6 +2,9 @@
 date: 2017-06-16T17:45:11+01:00
 title: Rabbit food dispenser
 weight: 10
+menu:
+    main:
+        parent: devices
 ---
 
 IoT enabled rabbit food dispenser, automatic and controllable via Internet. 

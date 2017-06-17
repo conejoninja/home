@@ -25,7 +25,7 @@ publishDir = "."
 	permalink = "#"
 
 	# Custom assets
-	custom_css = []
+	custom_css = []                    
 	custom_js  = []
 
 	# Syntax highlighting theme
@@ -38,7 +38,7 @@ publishDir = "."
     [params.font]
     	text = "Ubuntu"
     	code = "Ubuntu Mono"
-
+                                                
 
 [social]
 	twitter = ""
@@ -52,6 +52,7 @@ publishDir = "."
 	weight = 1
 
 [[menu.main]]
+	identifier = "devices"
 	name   = "Devices"
 	url    = "devices/"
 	weight = 10
