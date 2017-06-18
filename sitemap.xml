@@ -23,7 +23,16 @@
   </url>
   
   <url>
+    <loc>https://conejoninja.github.io/home/contributing/</loc>
+  </url>
+  
+  <url>
     <loc>https://conejoninja.github.io/home/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://conejoninja.github.io/home/contributing/</loc>
     <priority>0</priority>
   </url>
   

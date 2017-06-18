@@ -62,3 +62,8 @@ publishDir = "."
 	url    = "protocol/"
 	weight = 20
 
+[[menu.main]]
+	name   = "Contributing"
+	url    = "contributing/"
+	weight = 30
+

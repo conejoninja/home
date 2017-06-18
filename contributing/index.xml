@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Contributings on Home Automation project</title>
+    <link>https://conejoninja.github.io/home/contributing/</link>
+    <description>Recent content in Contributings on Home Automation project</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Released under the MIT license</copyright>
+    
+	<atom:link href="https://conejoninja.github.io/home/contributing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://conejoninja.github.io/home/contributing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://conejoninja.github.io/home/contributing/</guid>
+      <description>Contributing Guidelines Code of Conduct This project is intended to be a safe, welcoming space for collaboration. All contributors are expected to adhere to the Contributor Covenant code of conduct. Thank you for being kind to each other!
+Contributions welcome! Before spending lots of time on something, ask for feedback on your idea first!
+Please search issues and pull requests (or in any of the related projects) before adding something new!</description>
+    </item>
+    
+  </channel>
+</rss>
