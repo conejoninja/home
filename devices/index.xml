@@ -19,16 +19,16 @@
       
       <guid>https://conejoninja.github.io/home/devices/</guid>
       <description> List of devices connected to the network.
-Devices  Food01: IoT enabled Rabbit food dispenser autonomous and controllable via internet.  </description>
+Devices  Food01: IoT enabled Rabbit feeder, autonomous and controllable via internet.  </description>
     </item>
     
     <item>
-      <title>Rabbit food dispenser</title>
+      <title>Rabbit feeder</title>
       <link>https://conejoninja.github.io/home/devices/food01/</link>
       <pubDate>Fri, 16 Jun 2017 17:45:11 +0100</pubDate>
       
       <guid>https://conejoninja.github.io/home/devices/food01/</guid>
-      <description>IoT enabled rabbit food dispenser, automatic and controllable via Internet.
+      <description>IoT enabled rabbit feeder, automatic and controllable via Internet.
 Github repository: https://github.com/conejoninja/home_food
 Idea and motivation The main idea was to be able to feed these two little rascals even when I&amp;rsquo;m not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don&amp;rsquo;t do well on hot weather.</description>
     </item>

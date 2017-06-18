@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title>Rabbit food dispenser - Home Automation project</title>
+    <title>Rabbit feeder - Home Automation project</title>
     <meta name="generator" content="Hugo 0.21" />
 
     
@@ -97,7 +97,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        Rabbit food dispenser
+        Rabbit feeder
       </div>
     </div>
 
@@ -214,9 +214,9 @@
 
 
 
-<a class="current" title="Rabbit food dispenser" href="/home/devices/food01/">
+<a class="current" title="Rabbit feeder" href="/home/devices/food01/">
 	
-	Rabbit food dispenser
+	Rabbit feeder
 </a>
 
 
@@ -284,21 +284,21 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1>Rabbit food dispenser </h1>
+			<h1>Rabbit feeder </h1>
 
 			
 
-<p>IoT enabled rabbit food dispenser, automatic and controllable via Internet.</p>
+<p>IoT enabled rabbit feeder, automatic and controllable via Internet.</p>
 
 <p><strong>Github repository:</strong> <a href="https://github.com/conejoninja/home_food">https://github.com/conejoninja/home_food</a></p>
 
-<p><img src="https://conejoninja.github.io/home/images/food/food0101.jpg" alt="rabbit food dispenser" title="Rabbit food 01" /></p>
+<p><img src="https://conejoninja.github.io/home/images/food/food0101.jpg" alt="rabbit feeder" title="Rabbit food 01" /></p>
 
 <h2 id="idea-and-motivation">Idea and motivation</h2>
 
 <p>The main idea was to be able to feed these two little rascals even when I&rsquo;m not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don&rsquo;t do well on hot weather.</p>
 
-<p>The dispenser will wake up each 15 minutes, send the temperature and humidity to a server and check if it&rsquo;s time to feed the monsters. It&rsquo;s as autonomous as possible (it will feed them if it&rsquo;s time, even if there&rsquo;s no internet connection). The dispenser will notify if there&rsquo;s a problem with the temperature and humidity readings or if it&rsquo;s jammed. It could receive a command to dispense extra food even if it&rsquo;s not the time to.</p>
+<p>The feeder will wake up each 15 minutes, send the temperature and humidity to a server and check if it&rsquo;s time to feed the monsters. It&rsquo;s as autonomous as possible (it will feed them if it&rsquo;s time, even if there&rsquo;s no internet connection). The feeder will notify if there&rsquo;s a problem with the temperature and humidity readings or if it&rsquo;s jammed. It could receive a command to dispense extra food even if it&rsquo;s not the time to.</p>
 
 <p><img src="https://conejoninja.github.io/home//images/rabbits.jpg" alt="little rascals" title="Baloo &amp; Moneypenny" /></p>
 
@@ -325,7 +325,7 @@
 
 <p><img src="https://github.com/conejoninja/home_food/raw/master/circuit.png" alt="the circuit" title="The circuit" /></p>
 
-<p>The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there&rsquo;s a jam in the dispenser. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.</p>
+<p>The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there&rsquo;s a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.</p>
 
 <p>Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn&rsquo;t find Fritzing components for them.</p>
 
@@ -446,7 +446,7 @@
 
 <p><img src="https://conejoninja.github.io/home/images/food/rotary.encoder.jpg" alt="rotary encoder" title="rotary encoder" /></p>
 
-<p>To control if the dispenser is jammed or how much food is already served we&rsquo;ll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn&rsquo;t support them, but it doesn&rsquo;t matter to us since we&rsquo;re using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check <a href="https://www.arduino.cc/en/Reference/AttachInterrupt">this table</a> for more information.</p>
+<p>To control if the feeder is jammed or how much food is already served we&rsquo;ll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn&rsquo;t support them, but it doesn&rsquo;t matter to us since we&rsquo;re using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check <a href="https://www.arduino.cc/en/Reference/AttachInterrupt">this table</a> for more information.</p>
 
 <h2 id="dht11-temperature-and-humidity-sensor">DHT11 - Temperature and humidity sensor</h2>
 

@@ -1,6 +1,6 @@
 ---
 date: 2017-06-16T17:45:11+01:00
-title: Rabbit food dispenser
+title: Rabbit feeder
 weight: 10
 menu:
     main:
@@ -8,11 +8,11 @@ menu:
         url: devices/food01/
 ---
 
-IoT enabled rabbit food dispenser, automatic and controllable via Internet. 
+IoT enabled rabbit feeder, automatic and controllable via Internet. 
 
 **Github repository:** https://github.com/conejoninja/home_food
 
-![rabbit food dispenser](https://conejoninja.github.io/home/images/food/food0101.jpg "Rabbit food 01")
+![rabbit feeder](https://conejoninja.github.io/home/images/food/food0101.jpg "Rabbit food 01")
 
 
 
@@ -20,7 +20,7 @@ IoT enabled rabbit food dispenser, automatic and controllable via Internet.
 
 The main idea was to be able to feed these two little rascals even when I'm not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don't do well on hot weather. 
 
-The dispenser will wake up each 15 minutes, send the temperature and humidity to a server and check if it's time to feed the monsters. It's as autonomous as possible (it will feed them if it's time, even if there's no internet connection). The dispenser will notify if there's a problem with the temperature and humidity readings or if it's jammed. It could receive a command to dispense extra food even if it's not the time to.
+The feeder will wake up each 15 minutes, send the temperature and humidity to a server and check if it's time to feed the monsters. It's as autonomous as possible (it will feed them if it's time, even if there's no internet connection). The feeder will notify if there's a problem with the temperature and humidity readings or if it's jammed. It could receive a command to dispense extra food even if it's not the time to.
 
 ![little rascals](https://conejoninja.github.io/home//images/rabbits.jpg "Baloo & Moneypenny")
 
@@ -47,7 +47,7 @@ The dispenser will wake up each 15 minutes, send the temperature and humidity to
 
 ![the circuit](https://github.com/conejoninja/home_food/raw/master/circuit.png "The circuit")
 
-The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there's a jam in the dispenser. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.
+The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there's a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.
 
 Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn't find Fritzing components for them. 
   
@@ -104,7 +104,7 @@ At code level, to avoid jams we move forward the motor a few miliseconds and the
 
 ![rotary encoder](https://conejoninja.github.io/home/images/food/rotary.encoder.jpg "rotary encoder")
 
-To control if the dispenser is jammed or how much food is already served we'll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn't support them, but it doesn't matter to us since we're using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check [this table](https://www.arduino.cc/en/Reference/AttachInterrupt) for more information.  
+To control if the feeder is jammed or how much food is already served we'll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn't support them, but it doesn't matter to us since we're using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check [this table](https://www.arduino.cc/en/Reference/AttachInterrupt) for more information.  
 
 
 ## DHT11 - Temperature and humidity sensor

@@ -48,4 +48,4 @@ The dashboard/API to consume the information off of the database and show some n
 ## Devices
 
 ### Food-01
-Food-01 is a rabbit-food automatic dispenser. It dispenses food twice a day, small quantity on breakfast and a bigger one at dinner time. It communicates the status, if there was any problem during its operation. It accepts an user command to dispense extra food at any given time. It also sends temperature/humidity  
+Food-01 is a rabbit automatic feeder. It dispenses food twice a day, small quantity on breakfast and a bigger one at dinner time. It communicates the status, if there was any problem during its operation. It accepts an user command to dispense extra food at any given time. It also sends temperature/humidity  
