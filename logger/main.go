@@ -35,41 +35,7 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
-
-	if _, err := os.Stat("./config.yml"); err != nil {
-		fmt.Println("Error: config.yml file does not exist")
-		os.Exit(1)
-	}
-
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	viper.ReadInConfig()
-
-	proto := fmt.Sprint(viper.Get("mqtt_protocol"))
-	server := fmt.Sprint(viper.Get("mqtt_server"))
-	port := fmt.Sprint(viper.Get("mqtt_port"))
-	user := fmt.Sprint(viper.Get("mqtt_user"))
-	password := fmt.Sprint(viper.Get("mqtt_password"))
-	client_id := fmt.Sprint(viper.Get("mqtt_client_id"))
-
-	if proto == "" {
-		proto = "ws"
-	}
-	if port == "" {
-		port = "9001"
-	}
-	if client_id == "" {
-		client_id = "logger"
-	}
-
-	ws_enabled := false
-	if fmt.Sprint(viper.Get("websocket_enabled")) == "1" || fmt.Sprint(viper.Get("websocket_enabled")) == "true" {
-		ws_enabled = true
-	}
-	ws_port := fmt.Sprint(viper.Get("websocket_port"))
-	if ws_port == "" {
-		ws_port = "8055"
-	}
+	proto, server, port, user, password, client_id, ws_enabled, ws_port := readConfig()
 
 	db = storage.NewBadger("./db")
 
@@ -198,4 +164,70 @@ func handleMessages() {
 func print(s string) {
 	fmt.Println(s)
 	broadcast <- []byte(s)
+}
+
+func readConfig() (proto, server, port, user, password, client_id string, ws_enabled bool, ws_port string) {
+	if _, err := os.Stat("./config.yml"); err != nil {
+		fmt.Println("Error: config.yml file does not exist")
+	}
+
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.ReadInConfig()
+
+	proto := os.Getenv("MQTT_PROTOCOL")
+	server := os.Getenv("MQTT_SERVER")
+	port := os.Getenv("MQTT_PORT")
+	user := os.Getenv("MQTT_USER")
+	password := os.Getenv("MQTT_PASSWORD")
+	client_id := os.Getenv("MQTT_CLIENT_ID")
+
+	ws_enabled_str := os.Getenv("WEBSOCKET_ENABLED")
+	ws_port := os.Getenv("WEBSOCKET_PORT")
+
+	if proto == "" {
+		proto = fmt.Sprint(viper.Get("mqtt_protocol"))
+	}
+	if server == "" {
+		server = fmt.Sprint(viper.Get("mqtt_server"))
+	}
+	if port == "" {
+		port = fmt.Sprint(viper.Get("mqtt_port"))
+	}
+	if user == "" {
+		user = fmt.Sprint(viper.Get("mqtt_user"))
+	}
+	if password == "" {
+		password = fmt.Sprint(viper.Get("mqtt_password"))
+	}
+	if client_id == "" {
+		client_id = fmt.Sprint(viper.Get("mqtt_client_id"))
+	}
+	if ws_enabled_str == "" {
+		ws_enabled_str = fmt.Sprint(viper.Get("websocket_enabled"))
+	}
+	if ws_port == "" {
+		ws_port = fmt.Sprint(viper.Get("websocket_port"))
+	}
+
+	if proto == "" {
+		proto = "ws"
+	}
+	if port == "" {
+		port = "9001"
+	}
+	if client_id == "" {
+		client_id = "logger"
+	}
+
+	ws_enabled := false
+	if ws_enabled_str == "1" || ws_enabled_str == "true" {
+		ws_enabled = true
+	}
+	if ws_port == "" {
+		ws_port = "8055"
+	}
+
+	return
+
 }
