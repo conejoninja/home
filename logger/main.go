@@ -6,16 +6,33 @@ import (
 
 	"encoding/json"
 
+	"log"
+	"net/http"
+
 	"github.com/conejoninja/home/common"
 	"github.com/conejoninja/home/storage"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/gorilla/websocket"
 	"github.com/spf13/viper"
 )
 
+// STORAGE
 var db storage.Storage
+
+// MQTT
 var subscriptions map[string]bool
 var token mqtt.Token
 var c mqtt.Client
+
+// wEBSOCKETS
+var clients = make(map[*websocket.Conn]bool)
+var broadcast = make(chan []byte)
+
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
 
 func main() {
 
@@ -43,6 +60,15 @@ func main() {
 	}
 	if client_id == "" {
 		client_id = "logger"
+	}
+
+	ws_enabled := false
+	if fmt.Sprint(viper.Get("websocket_enabled")) == "1" || fmt.Sprint(viper.Get("websocket_enabled")) == "true" {
+		ws_enabled = true
+	}
+	ws_port := fmt.Sprint(viper.Get("websocket_port"))
+	if ws_port == "" {
+		ws_port = "8055"
 	}
 
 	db = storage.NewBadger("./db")
@@ -75,6 +101,21 @@ func main() {
 		os.Exit(1)
 	}
 
+	if ws_enabled {
+		// Configure websocket route
+		http.HandleFunc("/ws", handleConnections)
+
+		// Start listening for incoming chat messages
+		go handleMessages()
+
+		// Start the server on localhost port 8000 and log any errors
+		print("http server started on: " + ws_port)
+		err := http.ListenAndServe(":"+ws_port, nil)
+		if err != nil {
+			log.Fatal("ListenAndServe: ", err)
+		}
+	}
+
 	for {
 
 	}
@@ -87,17 +128,17 @@ func restartDevices() {
 	devices := db.GetDevices()
 	for _, device := range devices {
 		subscriptions[device.Id] = true
-		fmt.Println("Subscribed to", device.Id)
+		print("Subscribed to " + device.Id)
 		if token = c.Subscribe(device.Id, 0, nil); token.Wait() && token.Error() != nil {
 			subscriptions[device.Id] = false
-			fmt.Println(token.Error())
+			print(fmt.Sprintln(token.Error()))
 			os.Exit(1)
 		}
 	}
 }
 
 var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("DISCOVERY: %s\n", msg.Payload())
+	print("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var device common.Device
 	err := json.Unmarshal(msg.Payload(), &device)
 	if err == nil {
@@ -117,8 +158,7 @@ var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Mes
 }
 
 var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("TOPIC: %s\n", msg.Topic())
-	fmt.Printf("MSG: %s\n", msg.Payload())
+	print("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var value common.Value
 	err := json.Unmarshal(msg.Payload(), &value)
 	if err == nil {
@@ -126,4 +166,36 @@ var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 	} else {
 		fmt.Println(err)
 	}
+}
+
+/**
+ * WEBSOCKETS
+ */
+func handleConnections(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	clients[ws] = true
+
+}
+
+func handleMessages() {
+	for {
+		msg := <-broadcast
+		for client := range clients {
+			err := client.WriteMessage(1, msg)
+			if err != nil {
+				log.Printf("error: %v", err)
+				client.Close()
+				delete(clients, client)
+			}
+		}
+	}
+}
+
+func print(s string) {
+	fmt.Println(s)
+	broadcast <- []byte(s)
 }

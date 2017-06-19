@@ -4,3 +4,6 @@ mqtt_protocol: ws
 mqtt_user: mqttuser
 mqtt_password: mqttpassword
 mqtt_client_id: logger
+websocket_enabled: false
+websocket_port: 8055
+
