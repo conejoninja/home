@@ -175,15 +175,15 @@ func readConfig() (proto, server, port, user, password, client_id string, ws_ena
 	viper.AddConfigPath(".")
 	viper.ReadInConfig()
 
-	proto := os.Getenv("MQTT_PROTOCOL")
-	server := os.Getenv("MQTT_SERVER")
-	port := os.Getenv("MQTT_PORT")
-	user := os.Getenv("MQTT_USER")
-	password := os.Getenv("MQTT_PASSWORD")
-	client_id := os.Getenv("MQTT_CLIENT_ID")
+	proto = os.Getenv("MQTT_PROTOCOL")
+	server = os.Getenv("MQTT_SERVER")
+	port = os.Getenv("MQTT_PORT")
+	user = os.Getenv("MQTT_USER")
+	password = os.Getenv("MQTT_PASSWORD")
+	client_id = os.Getenv("MQTT_CLIENT_ID")
 
 	ws_enabled_str := os.Getenv("WEBSOCKET_ENABLED")
-	ws_port := os.Getenv("WEBSOCKET_PORT")
+	ws_port = os.Getenv("WEBSOCKET_PORT")
 
 	if proto == "" {
 		proto = fmt.Sprint(viper.Get("mqtt_protocol"))
@@ -220,7 +220,7 @@ func readConfig() (proto, server, port, user, password, client_id string, ws_ena
 		client_id = "logger"
 	}
 
-	ws_enabled := false
+	ws_enabled = false
 	if ws_enabled_str == "1" || ws_enabled_str == "true" {
 		ws_enabled = true
 	}
