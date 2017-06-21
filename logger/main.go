@@ -35,9 +35,9 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
-	proto, server, port, user, password, client_id, ws_enabled, ws_port := readConfig()
+	db_path, proto, server, port, user, password, client_id, ws_enabled, ws_port := readConfig()
 
-	db = storage.NewBadger("./db")
+	db = storage.NewBadger(db_path)
 
 	opts := mqtt.NewClientOptions().AddBroker(proto + "://" + server + ":" + port)
 	opts.SetClientID(client_id)
@@ -166,7 +166,7 @@ func print(s string) {
 	broadcast <- []byte(s)
 }
 
-func readConfig() (proto, server, port, user, password, client_id string, ws_enabled bool, ws_port string) {
+func readConfig() (db_path, proto, server, port, user, password, client_id string, ws_enabled bool, ws_port string) {
 	if _, err := os.Stat("./config.yml"); err != nil {
 		fmt.Println("Error: config.yml file does not exist")
 	}
@@ -174,6 +174,8 @@ func readConfig() (proto, server, port, user, password, client_id string, ws_ena
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
 	viper.ReadInConfig()
+
+	db_path = os.Getenv("DB_PATH")
 
 	proto = os.Getenv("MQTT_PROTOCOL")
 	server = os.Getenv("MQTT_SERVER")
@@ -187,6 +189,9 @@ func readConfig() (proto, server, port, user, password, client_id string, ws_ena
 
 	if proto == "" {
 		proto = fmt.Sprint(viper.Get("mqtt_protocol"))
+	}
+	if db_path == "" {
+		db_path = fmt.Sprint(viper.Get("db_path"))
 	}
 	if server == "" {
 		server = fmt.Sprint(viper.Get("mqtt_server"))
