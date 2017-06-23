@@ -14,6 +14,7 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/gorilla/websocket"
 	"github.com/spf13/viper"
+	"time"
 )
 
 // STORAGE
@@ -53,16 +54,21 @@ func main() {
 
 	c = mqtt.NewClient(opts)
 	if token = c.Connect(); token.Wait() && token.Error() != nil {
-		fmt.Println(token)
 		fmt.Println(token.Error())
 		panic(token.Error())
 	}
 
+
 	restartDevices()
 
-	fmt.Println("Starting " + client_id + " ...")
+	go print("Starting " + client_id + " ...")
 	// Discover new devices when they connect to the network
-	if token := c.Subscribe("discovery", 0, discoveryHandler); token.Wait() && token.Error() != nil {
+	if token = c.Subscribe("discovery", 0, discoveryHandler); token.Wait() && token.Error() != nil {
+		fmt.Println(token.Error())
+		os.Exit(1)
+	}
+
+	if token = c.Subscribe("events", 0, eventsHandler); token.Wait() && token.Error() != nil {
 		fmt.Println(token.Error())
 		os.Exit(1)
 	}
@@ -75,7 +81,7 @@ func main() {
 		go handleMessages()
 
 		// Start the server on localhost port 8000 and log any errors
-		print("http server started on: " + ws_port)
+		go print("http server started on: " + ws_port)
 		err := http.ListenAndServe(":"+ws_port, nil)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
@@ -94,17 +100,19 @@ func restartDevices() {
 	devices := db.GetDevices()
 	for _, device := range devices {
 		subscriptions[device.Id] = true
-		print("Subscribed to " + device.Id)
-		if token = c.Subscribe(device.Id, 0, nil); token.Wait() && token.Error() != nil {
+		go print("Subscribed to " + device.Id)
+		token = c.Subscribe(device.Id, 0, nil)
+		if token = c.Subscribe(device.Id, 0, nil); token.WaitTimeout(10*time.Second) && token.Error() != nil {
 			subscriptions[device.Id] = false
-			print(fmt.Sprintln(token.Error()))
+			go print(fmt.Sprintln(token.Error()))
 			os.Exit(1)
+
 		}
 	}
 }
 
 var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	print("[" + msg.Topic() + "] " + string(msg.Payload()))
+	go print("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var device common.Device
 	err := json.Unmarshal(msg.Payload(), &device)
 	if err == nil {
@@ -123,12 +131,25 @@ var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Mes
 	}
 }
 
-var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	print("[" + msg.Topic() + "] " + string(msg.Payload()))
-	var value common.Value
-	err := json.Unmarshal(msg.Payload(), &value)
+var eventsHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
+	go print("[" + msg.Topic() + "] " + string(msg.Payload()))
+	var evt common.Event
+	err := json.Unmarshal(msg.Payload(), &evt)
 	if err == nil {
-		db.AddValue(msg.Topic(), value)
+		db.AddEvent(evt.Id, evt)
+	} else {
+		fmt.Println(err)
+	}
+}
+
+var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
+	go print("[" + msg.Topic() + "] " + string(msg.Payload()))
+	var values []common.Value
+	err := json.Unmarshal(msg.Payload(), &values)
+	if err == nil {
+		for _, value := range values {
+			db.AddValue(msg.Topic(), value)
+		}
 	} else {
 		fmt.Println(err)
 	}
@@ -162,6 +183,10 @@ func handleMessages() {
 }
 
 func print(s string) {
+	t := time.Now()
+	s = fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d ",
+		t.Year(), t.Month(), t.Day(),
+		t.Hour(), t.Minute(), t.Second()) + s
 	fmt.Println(s)
 	broadcast <- []byte(s)
 }
@@ -215,6 +240,9 @@ func readConfig() (db_path, proto, server, port, user, password, client_id strin
 		ws_port = fmt.Sprint(viper.Get("websocket_port"))
 	}
 
+	if db_path == "" {
+		db_path = "./db"
+	}
 	if proto == "" {
 		proto = "ws"
 	}

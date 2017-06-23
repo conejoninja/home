@@ -7,20 +7,23 @@ import (
 
 	"encoding/json"
 
-	"github.com/conejoninja/home/common"
-	"github.com/dgraph-io/badger/badger"
-	"time"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/conejoninja/home/common"
+	"github.com/dgraph-io/badger/badger"
 )
 
 type Badger struct {
 	valuesPath  string
 	devicesPath string
 	metaPath    string
+	eventsPath  string
 	valuesKV    *badger.KV
 	devicesKV   *badger.KV
 	metaKV      *badger.KV
+	eventsKV    *badger.KV
 }
 
 func NewBadger(path string) *Badger {
@@ -39,6 +42,9 @@ func NewBadger(path string) *Badger {
 
 	db.metaPath = path + "meta"
 	db.metaKV = openKV(db.metaPath)
+
+	db.eventsPath = path + "events"
+	db.eventsKV = openKV(db.eventsPath)
 
 	return &db
 }
@@ -119,12 +125,16 @@ func (db *Badger) GetDevices() []common.Device {
 	return devices
 }
 
-
 func (db *Badger) AddValue(id string, value common.Value) error {
-	now := time.Now()
-	sensor := []byte(id + "-" + strconv.Itoa(int(now.Unix())))
 
-	value.Time = now
+	var sensor []byte
+	if value.Time.IsZero() {
+		now := time.Now()
+		sensor = []byte(id + "-" + strconv.Itoa(int(now.Unix())))
+		value.Time = now
+	} else {
+		sensor = []byte(id + "-" + strconv.Itoa(int(value.Time.Unix())))
+	}
 
 	payload, err := json.Marshal(value)
 	if err != nil {
@@ -133,7 +143,6 @@ func (db *Badger) AddValue(id string, value common.Value) error {
 	db.valuesKV.Set(sensor, payload)
 	return nil
 }
-
 
 func (db *Badger) GetValue(id []byte) common.Value {
 	var value common.Value
@@ -156,7 +165,6 @@ func (db *Badger) GetValue(id []byte) common.Value {
 	}
 	return value
 }
-
 
 func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common.Value {
 
@@ -200,3 +208,90 @@ func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common
 
 	return values
 }
+
+func (db *Badger) AddEvent(id string, evt common.Event) error {
+
+	var event []byte
+	if evt.Time.IsZero() {
+		now := time.Now()
+		event = []byte(id + "-" + strconv.Itoa(int(now.Unix())))
+		evt.Time = now
+	} else {
+		event = []byte(id + "-" + strconv.Itoa(int(evt.Time.Unix())))
+	}
+
+	payload, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	db.eventsKV.Set(event, payload)
+	return nil
+}
+
+
+func (db *Badger) GetEvent(id []byte) common.Event {
+	var evt common.Event
+	itrOpt := badger.IteratorOptions{
+		PrefetchSize: 1000,
+		FetchValues:  true,
+		Reverse:      false,
+	}
+	itr := db.eventsKV.NewIterator(itrOpt)
+	for itr.Seek(id); itr.Valid(); itr.Next() {
+		item := itr.Item()
+		if string(id) == string(item.Key()) {
+			err := json.Unmarshal(item.Value(), &evt)
+			if err != nil {
+				// Do something ?
+			}
+			return evt
+		}
+		break
+	}
+	return evt
+}
+
+
+func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common.Event {
+
+	sensor := []byte(id + strconv.Itoa(int(start.Unix())))
+	endInt := end.Unix()
+
+	itrOpt := badger.IteratorOptions{
+		PrefetchSize: 1000,
+		FetchValues:  true,
+		Reverse:      false,
+	}
+	itr := db.eventsKV.NewIterator(itrOpt)
+
+	nEvents := 0
+	for itr.Seek(sensor); itr.Valid(); itr.Next() {
+		item := itr.Item()
+		parts := strings.Split(string(item.Key()), "-")
+		l := len(parts)
+		timeStr, _ := strconv.Atoi(parts[l-1])
+		if int64(timeStr) > endInt {
+			break
+		} else {
+			nEvents++
+		}
+	}
+
+	nEventsTotal := nEvents
+	events := make([]common.Event, nEventsTotal)
+	nEvents = 0
+	for itr.Seek(sensor); itr.Valid(); itr.Next() {
+		item := itr.Item()
+		err := json.Unmarshal(item.Value(), &events[nEvents])
+		if err != nil {
+			// Do something ?
+		}
+		nEvents++
+		if nEvents >= nEventsTotal {
+			break
+		}
+	}
+
+	return events
+}
+

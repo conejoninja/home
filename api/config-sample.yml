@@ -1,0 +1,5 @@
+db_path: /data/db
+
+web_user: some_user
+web_password: random_password
+web_port: 8080
