@@ -1,2 +1,3 @@
 deploy
 docker/logger/logger
+config.yml

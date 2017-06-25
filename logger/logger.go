@@ -1,4 +1,4 @@
-package main
+package logger
 
 import (
 	"fmt"
@@ -9,12 +9,13 @@ import (
 	"log"
 	"net/http"
 
+	"time"
+
 	"github.com/conejoninja/home/common"
 	"github.com/conejoninja/home/storage"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/gorilla/websocket"
 	"github.com/spf13/viper"
-	"time"
 )
 
 // STORAGE
@@ -35,7 +36,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func main() {
+func Start() {
 	db_path, proto, server, port, user, password, client_id, ws_enabled, ws_port := readConfig()
 
 	db = storage.NewBadger(db_path)
@@ -58,10 +59,9 @@ func main() {
 		panic(token.Error())
 	}
 
-
 	restartDevices()
 
-	go print("Starting " + client_id + " ...")
+	go echo("Starting " + client_id + " ...")
 	// Discover new devices when they connect to the network
 	if token = c.Subscribe("discovery", 0, discoveryHandler); token.Wait() && token.Error() != nil {
 		fmt.Println(token.Error())
@@ -81,7 +81,7 @@ func main() {
 		go handleMessages()
 
 		// Start the server on localhost port 8000 and log any errors
-		go print("http server started on: " + ws_port)
+		go echo("http server started on: " + ws_port)
 		err := http.ListenAndServe(":"+ws_port, nil)
 		if err != nil {
 			log.Fatal("ListenAndServe: ", err)
@@ -100,11 +100,11 @@ func restartDevices() {
 	devices := db.GetDevices()
 	for _, device := range devices {
 		subscriptions[device.Id] = true
-		go print("Subscribed to " + device.Id)
+		go echo("Subscribed to " + device.Id)
 		token = c.Subscribe(device.Id, 0, nil)
 		if token = c.Subscribe(device.Id, 0, nil); token.WaitTimeout(10*time.Second) && token.Error() != nil {
 			subscriptions[device.Id] = false
-			go print(fmt.Sprintln(token.Error()))
+			go echo(fmt.Sprintln(token.Error()))
 			os.Exit(1)
 
 		}
@@ -112,7 +112,7 @@ func restartDevices() {
 }
 
 var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	go print("[" + msg.Topic() + "] " + string(msg.Payload()))
+	go echo("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var device common.Device
 	err := json.Unmarshal(msg.Payload(), &device)
 	if err == nil {
@@ -132,7 +132,7 @@ var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Mes
 }
 
 var eventsHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	go print("[" + msg.Topic() + "] " + string(msg.Payload()))
+	go echo("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var evt common.Event
 	err := json.Unmarshal(msg.Payload(), &evt)
 	if err == nil {
@@ -143,12 +143,17 @@ var eventsHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messag
 }
 
 var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	go print("[" + msg.Topic() + "] " + string(msg.Payload()))
+	go echo("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var values []common.Value
 	err := json.Unmarshal(msg.Payload(), &values)
 	if err == nil {
 		for _, value := range values {
 			db.AddValue(msg.Topic(), value)
+			datetime := time.Now()
+			if !value.Time.IsZero() {
+				datetime = value.Time
+			}
+			CalculateMetaAll(msg.Topic(), datetime)
 		}
 	} else {
 		fmt.Println(err)
@@ -182,7 +187,7 @@ func handleMessages() {
 	}
 }
 
-func print(s string) {
+func echo(s string) {
 	t := time.Now()
 	s = fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d ",
 		t.Year(), t.Month(), t.Day(),

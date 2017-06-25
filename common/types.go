@@ -1,6 +1,10 @@
 package common
 
-import "time"
+import (
+	"time"
+	"reflect"
+	"fmt"
+)
 
 type Device struct {
 	Id      string   `json:"id"`
@@ -37,6 +41,25 @@ type Event struct {
 	Priority uint8     `json:"priority,omitempty"`
 	Time     time.Time `json:"time,omitempty"`
 	Extra    []Param   `json:"extra,omitempty"`
+}
+
+type Meta struct {
+	Max float64 `json:"max,omitempty"`
+	Min float64 `json:"min,omitempty"`
+	Avg float64 `json:"avg,omitempty"`
+	N   int     `json:"n,omitempty"`
+}
+
+
+var floatType = reflect.TypeOf(float64(0))
+func GetFloat(unk interface{}) (float64, error) {
+	v := reflect.ValueOf(unk)
+	v = reflect.Indirect(v)
+	if !v.Type().ConvertibleTo(floatType) {
+		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
+	}
+	fv := v.Convert(floatType)
+	return fv.Float(), nil
 }
 
 func (d *Device) IsNil() bool {

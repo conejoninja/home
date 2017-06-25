@@ -295,3 +295,12 @@ func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common
 	return events
 }
 
+
+func (db *Badger) AddMeta(id []byte, meta common.Meta) error {
+	payload, err := json.Marshal(meta)
+	if err != nil {
+		return err
+	}
+	db.metaKV.Set(id, payload)
+	return nil
+}
