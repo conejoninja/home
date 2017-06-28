@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -23,7 +22,6 @@ func CalculateMeta(sensor string, start, end time.Time, prefix string) {
 			var tmpVal float64
 			for _, value := range values {
 				val, _ := common.GetFloat(value.Value)
-				fmt.Println(val)
 				if val > meta.Max {
 					meta.Max = val
 				}
@@ -40,11 +38,13 @@ func CalculateMeta(sensor string, start, end time.Time, prefix string) {
 }
 
 func CalculateMetaHour(sensor string, start time.Time) {
+	start = time.Date(start.Year(), start.Month(), start.Day(), start.Hour(), 0, 0, 0, start.Location())
 	end := start.Add(1 * time.Hour)
 	CalculateMeta(sensor, start, end, "hour-")
 }
 
 func CalculateMetaDay(sensor string, start time.Time) {
+	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, start.Location())
 	end := start.Add(24 * time.Hour)
 	CalculateMeta(sensor, start, end, "day-")
 }

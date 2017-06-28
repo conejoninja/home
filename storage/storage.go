@@ -7,7 +7,7 @@ import (
 )
 
 type Storage interface {
-	AddValue(id string, value common.Value) error
+	AddValue(device string, value common.Value) error
 	AddEvent(id string, value common.Event) error
 	AddDevice(id []byte, device common.Device) error
 	AddMeta(id []byte, meta common.Meta) error

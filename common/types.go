@@ -55,6 +55,9 @@ var floatType = reflect.TypeOf(float64(0))
 func GetFloat(unk interface{}) (float64, error) {
 	v := reflect.ValueOf(unk)
 	v = reflect.Indirect(v)
+	if unk == nil {
+		return 0, nil
+	}
 	if !v.Type().ConvertibleTo(floatType) {
 		return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
 	}

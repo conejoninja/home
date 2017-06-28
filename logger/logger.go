@@ -153,7 +153,7 @@ var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			if !value.Time.IsZero() {
 				datetime = value.Time
 			}
-			CalculateMetaAll(msg.Topic(), datetime)
+			CalculateMetaAll(msg.Topic()+"-"+value.Id, datetime)
 		}
 	} else {
 		fmt.Println(err)

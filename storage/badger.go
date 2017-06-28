@@ -13,6 +13,7 @@ import (
 
 	"github.com/conejoninja/home/common"
 	"github.com/dgraph-io/badger/badger"
+	"fmt"
 )
 
 type Badger struct {
@@ -125,22 +126,20 @@ func (db *Badger) GetDevices() []common.Device {
 	return devices
 }
 
-func (db *Badger) AddValue(id string, value common.Value) error {
+func (db *Badger) AddValue(device string, value common.Value) error {
 
-	var sensor []byte
 	if value.Time.IsZero() {
 		now := time.Now()
-		sensor = []byte(id + "-" + strconv.Itoa(int(now.Unix())))
 		value.Time = now
-	} else {
-		sensor = []byte(id + "-" + strconv.Itoa(int(value.Time.Unix())))
 	}
+
+	id := []byte(device + "-" + value.Id + "-" + strconv.Itoa(int(value.Time.Unix())))
 
 	payload, err := json.Marshal(value)
 	if err != nil {
 		return err
 	}
-	db.valuesKV.Set(sensor, payload)
+	db.valuesKV.Set(id, payload)
 	return nil
 }
 
@@ -168,7 +167,7 @@ func (db *Badger) GetValue(id []byte) common.Value {
 
 func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common.Value {
 
-	sensor := []byte(id + strconv.Itoa(int(start.Unix())))
+	sensor := []byte(id + "-" + strconv.Itoa(int(start.Unix())))
 	endInt := end.Unix()
 
 	itrOpt := badger.IteratorOptions{
@@ -177,32 +176,35 @@ func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common
 		Reverse:      false,
 	}
 	itr := db.valuesKV.NewIterator(itrOpt)
-
+	              
 	nValues := 0
 	for itr.Seek(sensor); itr.Valid(); itr.Next() {
 		item := itr.Item()
 		parts := strings.Split(string(item.Key()), "-")
 		l := len(parts)
 		timeStr, _ := strconv.Atoi(parts[l-1])
-		if int64(timeStr) > endInt {
+		if string(item.Key()[:len(id)])!=id || int64(timeStr) > endInt {
+			nValues++
 			break
 		} else {
 			nValues++
 		}
 	}
 
-	nValuesTotal := nValues
+	nValuesTotal := (nValues-1)
 	values := make([]common.Value, nValuesTotal)
 	nValues = 0
-	for itr.Seek(sensor); itr.Valid(); itr.Next() {
-		item := itr.Item()
-		err := json.Unmarshal(item.Value(), &values[nValues])
-		if err != nil {
-			// Do something ?
-		}
-		nValues++
-		if nValues >= nValuesTotal {
-			break
+	if nValuesTotal > 0 {
+		for itr.Seek(sensor); itr.Valid(); itr.Next() {
+			item := itr.Item()
+			err := json.Unmarshal(item.Value(), &values[nValues])
+			if err != nil {
+				// Do something ?
+			}
+			nValues++
+			if nValues >= nValuesTotal {
+				break
+			}
 		}
 	}
 
@@ -228,7 +230,6 @@ func (db *Badger) AddEvent(id string, evt common.Event) error {
 	return nil
 }
 
-
 func (db *Badger) GetEvent(id []byte) common.Event {
 	var evt common.Event
 	itrOpt := badger.IteratorOptions{
@@ -250,7 +251,6 @@ func (db *Badger) GetEvent(id []byte) common.Event {
 	}
 	return evt
 }
-
 
 func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common.Event {
 
@@ -277,24 +277,25 @@ func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common
 		}
 	}
 
-	nEventsTotal := nEvents
+	nEventsTotal := (nEvents-1)
 	events := make([]common.Event, nEventsTotal)
 	nEvents = 0
-	for itr.Seek(sensor); itr.Valid(); itr.Next() {
-		item := itr.Item()
-		err := json.Unmarshal(item.Value(), &events[nEvents])
-		if err != nil {
-			// Do something ?
-		}
-		nEvents++
-		if nEvents >= nEventsTotal {
-			break
+	if nEventsTotal > 0 {
+		for itr.Seek(sensor); itr.Valid(); itr.Next() {
+			item := itr.Item()
+			err := json.Unmarshal(item.Value(), &events[nEvents])
+			if err != nil {
+				// Do something ?
+			}
+			nEvents++
+			if nEvents >= nEventsTotal {
+				break
+			}
 		}
 	}
 
 	return events
 }
-
 
 func (db *Badger) AddMeta(id []byte, meta common.Meta) error {
 	payload, err := json.Marshal(meta)
@@ -303,4 +304,32 @@ func (db *Badger) AddMeta(id []byte, meta common.Meta) error {
 	}
 	db.metaKV.Set(id, payload)
 	return nil
+}
+
+
+// FOR DEBUG
+func (db *Badger) ListAll(what string) {
+
+	itrOpt := badger.IteratorOptions{
+		PrefetchSize: 1000,
+		FetchValues:  true,
+		Reverse:      false,
+	}
+
+	var itr *badger.Iterator
+	if what == "meta" {
+		itr = db.metaKV.NewIterator(itrOpt)
+	} else if what == "devices" {
+		itr = db.devicesKV.NewIterator(itrOpt)
+	} else if what == "events" {
+		itr = db.eventsKV.NewIterator(itrOpt)
+	} else {
+		itr = db.valuesKV.NewIterator(itrOpt)
+	}
+
+	for itr.Rewind(); itr.Valid(); itr.Next() {
+		item := itr.Item()
+		fmt.Println(string(item.Key()), " = ", string(item.Value()))
+	}
+
 }
