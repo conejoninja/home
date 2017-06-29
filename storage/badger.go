@@ -222,7 +222,7 @@ func (db *Badger) AddEvent(id string, evt common.Event) error {
 		event = []byte(id + "-" + strconv.Itoa(int(evt.Time.Unix())))
 	}
 
-	payload, err := json.Marshal(event)
+	payload, err := json.Marshal(evt)
 	if err != nil {
 		return err
 	}

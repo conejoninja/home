@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/conejoninja/home/common"
+	"fmt"
 )
 
 func CalculateMeta(sensor string, start, end time.Time, prefix string) {
@@ -56,6 +57,7 @@ func CalculateMetaWeek(sensor string, start time.Time) {
 	}
 	weekday = weekday - 1
 	start = start.Add(-1 * time.Duration(weekday) * 24 * time.Hour)
+	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, start.Location())
 	end := start.Add(7 * 24 * time.Hour)
 	CalculateMeta(sensor, start, end, "week-")
 }
