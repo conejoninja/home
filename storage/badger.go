@@ -252,6 +252,27 @@ func (db *Badger) GetEvent(id []byte) common.Event {
 	return evt
 }
 
+func (db *Badger) GetMeta(id []byte) (meta common.Meta) {
+	itrOpt := badger.IteratorOptions{
+		PrefetchSize: 1000,
+		FetchValues:  true,
+		Reverse:      false,
+	}
+	itr := db.metaKV.NewIterator(itrOpt)
+	for itr.Seek(id); itr.Valid(); itr.Next() {
+		item := itr.Item()
+		if string(id) == string(item.Key()) {
+			err := json.Unmarshal(item.Value(), &meta)
+			if err != nil {
+				// Do something ?
+			}
+			return
+		}
+		break
+	}
+	return
+}
+
 func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common.Event {
 
 	sensor := []byte(id + strconv.Itoa(int(start.Unix())))
