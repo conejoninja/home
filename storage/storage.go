@@ -18,4 +18,5 @@ type Storage interface {
 	GetEventsBetweenTime(id string, start, end time.Time) []common.Event
 	GetDevice(id []byte) common.Device
 	GetDevices() []common.Device
+	GetLastEvent(id string) common.Event
 }
