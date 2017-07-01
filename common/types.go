@@ -16,18 +16,18 @@ type Device struct {
 
 type Value struct {
 	Id    string      `json:"id"`
-	Type  string      `json:"type"`
+	Type  string      `json:"type,omitempty"`
 	Name  string      `json:"name,omitempty"`
 	Unit  string      `json:"unit,omitempty"`
 	Min   string      `json:"min,omitempty"`
 	Max   string      `json:"max,omitempty"`
-	Time  time.Time   `json:"time,omitempty"`
+	Time  *time.Time   `json:"time,omitempty"`
 	Value interface{} `json:"value,omitempty"`
 }
 
 type Method struct {
 	Name   string  `json:"name"`
-	Params []Param `json:"params,omitempty"`
+	Params []Value `json:"params,omitempty"`
 }
 
 type Param struct {
@@ -39,7 +39,7 @@ type Event struct {
 	Id       string    `json:"id"`
 	Message  string    `json:"message,omitempty"`
 	Priority uint8     `json:"priority,omitempty"`
-	Time     time.Time `json:"time,omitempty"`
+	Time     *time.Time `json:"time,omitempty"`
 	Extra    []Param   `json:"extra,omitempty"`
 }
 

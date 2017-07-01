@@ -130,7 +130,7 @@ func (db *Badger) AddValue(device string, value common.Value) error {
 
 	if value.Time.IsZero() {
 		now := time.Now()
-		value.Time = now
+		value.Time = &now
 	}
 
 	id := []byte(device + "-" + value.Id + "-" + strconv.Itoa(int(value.Time.Unix())))
@@ -217,7 +217,7 @@ func (db *Badger) AddEvent(id string, evt common.Event) error {
 	if evt.Time.IsZero() {
 		now := time.Now()
 		event = []byte(id + "-" + strconv.Itoa(int(now.Unix())))
-		evt.Time = now
+		evt.Time = &now
 	} else {
 		event = []byte(id + "-" + strconv.Itoa(int(evt.Time.Unix())))
 	}
