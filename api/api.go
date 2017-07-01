@@ -79,7 +79,16 @@ func devices(res http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 
 func event(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	id := ps.ByName("id")
-	evt := db.GetLastEvent(id)
+	countStr := ps.ByName("count")
+	count := 10
+	if countStr != "" {
+		c, err := strconv.Atoi(countStr)
+		if err == nil {
+			count = c
+		}
+	}
+
+	evt := db.GetLastEvents(id, count)
 	evtjson, err := json.Marshal(evt)
 	if err != nil {
 		fmt.Fprint(res, "{\"error\":\"failed\"}")
@@ -132,6 +141,7 @@ func Start() {
 	router.GET("/sensor/:ids", cors(sensor))
 	router.GET("/meta/:ids", cors(meta))
 	router.GET("/event/:id", cors(event))
+	router.GET("/event/:id/:count", cors(event))
 	router.GET("/devices", cors(devices))
 
 	fmt.Println("API started...")

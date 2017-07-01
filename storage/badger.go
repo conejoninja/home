@@ -252,26 +252,31 @@ func (db *Badger) GetEvent(id []byte) common.Event {
 	return evt
 }
 
-func (db *Badger) GetLastEvent(id string) common.Event {
-	var evt common.Event
+func (db *Badger) GetLastEvents(id string, count int) []common.Event {
+	evts := make([]common.Event, count)
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
 		FetchValues:  true,
 		Reverse:      true,
 	}
 	itr := db.eventsKV.NewIterator(itrOpt)
+	e := 0
 	for itr.Seek([]byte(id + "-9")); itr.Valid(); itr.Next() {
 		item := itr.Item()
 		if string(id) == string(item.Key()[:len(id)]) {
-			err := json.Unmarshal(item.Value(), &evt)
+			err := json.Unmarshal(item.Value(), &evts[e])
 			if err != nil {
 				// Do something ?
 			}
-			return evt
+		} else {
+			break
 		}
-		break
+		e++
+		if e>=count {
+			break
+		}
 	}
-	return evt
+	return evts[:e]
 }
 
 func (db *Badger) GetMeta(id []byte) (meta common.Meta) {
