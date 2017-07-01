@@ -120,7 +120,7 @@ func call(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	f.Params = params
 	methodStr, _ := json.Marshal(f)
 
-	token := mqtt_client.Publish(device + "-call", 0, true, string(methodStr))
+	token := mqtt_client.Publish(device + "-call", 0, true, "[" + string(methodStr) + "]")
 	token.Wait()
 	if token.Error() != nil {
 		fmt.Fprintf(res, "{\"type\":\"error\",\"message\":\"%s\"}", token.Error())
