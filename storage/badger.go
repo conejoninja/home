@@ -128,7 +128,7 @@ func (db *Badger) GetDevices() []common.Device {
 
 func (db *Badger) AddValue(device string, value common.Value) error {
 
-	if value.Time.IsZero() {
+	if value.Time==nil || (*value.Time).IsZero() {
 		now := time.Now()
 		value.Time = &now
 	}
@@ -214,7 +214,7 @@ func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common
 func (db *Badger) AddEvent(id string, evt common.Event) error {
 
 	var event []byte
-	if evt.Time.IsZero() {
+	if evt.Time==nil || (*evt.Time).IsZero() {
 		now := time.Now()
 		event = []byte(id + "-" + strconv.Itoa(int(now.Unix())))
 		evt.Time = &now

@@ -154,8 +154,8 @@ var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 		for _, value := range values {
 			db.AddValue(msg.Topic(), value)
 			datetime := time.Now()
-			if !value.Time.IsZero() {
-				datetime = value.Time
+			if value.Time!=nil && !(*value.Time).IsZero() {
+				datetime = *value.Time
 			}
 			CalculateMetaAll(msg.Topic()+"-"+value.Id, datetime)
 		}
@@ -269,7 +269,9 @@ func readConfig() (cfg loggerconfig) {
 	if cfg.ws_port == "" {
 		cfg.ws_port = "8055"
 	}
+	
 
 	return
 
 }
+
