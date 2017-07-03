@@ -17,6 +17,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/spf13/viper"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"errors"
 )
 
 type apiconfig struct {
@@ -120,14 +121,31 @@ func call(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	f.Params = params
 	methodStr, _ := json.Marshal(f)
 
-	token := mqtt_client.Publish(device + "-call", 0, true, "[" + string(methodStr) + "]")
-	token.Wait()
-	if token.Error() != nil {
-		fmt.Fprintf(res, "{\"type\":\"error\",\"message\":\"%s\"}", token.Error())
+	err := mqttcall(device + "-call", "[" + string(methodStr) + "]", true)
+	if err != nil {
+		fmt.Fprintf(res, "{\"type\":\"error\",\"message\":\"%s\"}", err)
 		return
 	}
-
 	fmt.Fprint(res, "{\"type\":\"success\",\"message\":\"Function called\"}")
+}
+
+func mqttcall(topic, payload string, retained bool) error {
+	tries := 0
+	for ; tries < 5 ;  {
+		token := mqtt_client.Publish(topic, 0, retained, payload)
+		token.Wait()
+		if token.Error() != nil {
+			if token = mqtt_client.Connect(); token.Wait() && token.Error() != nil {
+				fmt.Println(token.Error())
+				tries++
+			} else {
+				return nil
+			}
+		} else {
+			return nil
+		}
+	}
+	return errors.New("Not connected")
 }
 
 func cors(h httprouter.Handle) httprouter.Handle {
