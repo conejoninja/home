@@ -1,0 +1,14 @@
+db_path: ./db
+
+mqtt_server: mqtt.domain.tld
+mqtt_port: 9001
+mqtt_protocol: ws
+mqtt_user: mqttuser
+mqtt_password: mqttpassword
+mqtt_client_id: home-local
+
+api_enabled: true
+api_port: 80
+
+websocket_enabled: true
+websocket_port: 8055
