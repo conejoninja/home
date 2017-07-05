@@ -59,7 +59,7 @@ func openKV(path string) *badger.KV {
 
 	opt := badger.DefaultOptions
 	opt.Dir = path
-	opt.SyncWrites = true
+	//opt.SyncWrites = true
 	kv, err := badger.NewKV(&opt)
 	if err != nil {
 		log.Fatal(err)

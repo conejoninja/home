@@ -12,12 +12,13 @@ import (
 	"strconv"
 	"strings"
 
+	"errors"
+
 	"github.com/conejoninja/home/common"
 	"github.com/conejoninja/home/storage"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/julienschmidt/httprouter"
 	"github.com/spf13/viper"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"errors"
 )
 
 type apiconfig struct {
@@ -27,7 +28,6 @@ type apiconfig struct {
 // MQTT
 var mqtt_client mqtt.Client
 var token mqtt.Token
-
 
 // STORAGE
 var db storage.Storage
@@ -121,7 +121,7 @@ func call(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	f.Params = params
 	methodStr, _ := json.Marshal(f)
 
-	err := mqttcall(device + "-call", "[" + string(methodStr) + "]", true)
+	err := mqttcall(device+"-call", "["+string(methodStr)+"]", true)
 	if err != nil {
 		fmt.Fprintf(res, "{\"type\":\"error\",\"message\":\"%s\"}", err)
 		return
@@ -131,7 +131,7 @@ func call(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 func mqttcall(topic, payload string, retained bool) error {
 	tries := 0
-	for ; tries < 5 ;  {
+	for tries < 5 {
 		token := mqtt_client.Publish(topic, 0, retained, payload)
 		token.Wait()
 		if token.Error() != nil {
@@ -195,8 +195,6 @@ func Start() {
 	router.GET("/devices", cors(devices))
 	router.POST("/call/:device/:function", cors(call))
 
-
-
 	opts := mqtt.NewClientOptions().AddBroker(cfg.mqtt_proto + "://" + cfg.mqtt_server + ":" + cfg.mqtt_port)
 	opts.SetClientID(cfg.mqtt_client_id)
 	if cfg.mqtt_user != "" {
@@ -210,7 +208,6 @@ func Start() {
 		fmt.Println(token.Error())
 		panic(token.Error())
 	}
-
 
 	fmt.Println("API started...")
 	log.Fatal(http.ListenAndServe(":"+cfg.web_port, router))
