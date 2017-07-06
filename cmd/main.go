@@ -10,18 +10,9 @@ import (
 	"github.com/eclipse/paho.mqtt.golang"
 	"github.com/spf13/viper"
 	"time"
+	"github.com/conejoninja/home/common"
 )
 
-type MqttConfig struct {
-	Protocol, Server, Port, User, Password, ClientId string
-}
-
-type HomeConfig struct {
-	DBPath string
-	Mqtt   MqttConfig
-	WS     logger.WebsocketConfig
-	Api    api.ApiConfig
-}
 
 // STORAGE
 var db storage.Storage
@@ -64,7 +55,7 @@ func main() {
 
 }
 
-func readConfig() (cfg HomeConfig) {
+func readConfig() (cfg common.HomeConfig) {
 	if _, err := os.Stat("./config.yml"); err != nil {
 		fmt.Println("Error: config.yml file does not exist")
 	}
@@ -83,6 +74,17 @@ func readConfig() (cfg HomeConfig) {
 	if cfg.DBPath == "" {
 		cfg.DBPath = "./db"
 	}
+
+	cfg.TimeZone = os.Getenv("TIMEZONE")
+	if cfg.TimeZone == "" {
+		cfg.TimeZone = fmt.Sprint(viper.Get("timezone"))
+	}
+	var err error
+	cfg.Location, err = time.LoadLocation(cfg.TimeZone)
+	if err != nil {
+		cfg.Location = time.UTC
+	}
+
 
 
 	/**
@@ -141,10 +143,6 @@ func readConfig() (cfg HomeConfig) {
 	}
 	if cfg.Api.Port == "" {
 		cfg.Api.Port = "80"
-	}
-	cfg.Api.TimeZone = os.Getenv("TIMEZONE")
-	if cfg.Api.TimeZone == "" {
-		cfg.Api.TimeZone = fmt.Sprint(viper.Get("timezone"))
 	}
 
 	/**

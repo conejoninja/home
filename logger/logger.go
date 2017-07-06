@@ -17,14 +17,10 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-type WebsocketConfig struct {
-	Port    string
-	Enabled bool
-}
 
 var db storage.Storage
 var c mqtt.Client
-var cfg WebsocketConfig
+var cfg common.HomeConfig
 
 // MQTT
 var subscriptions map[string]bool
@@ -39,8 +35,8 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func Start(wscfg WebsocketConfig, dbcon storage.Storage, mqttclient mqtt.Client) {
-	cfg = wscfg
+func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Client) {
+	cfg = homecfg
 	db = dbcon
 	c = mqttclient
 
@@ -59,15 +55,15 @@ func Start(wscfg WebsocketConfig, dbcon storage.Storage, mqttclient mqtt.Client)
 		os.Exit(1)
 	}
 
-	if cfg.Enabled {
+	if cfg.WS.Enabled {
 		http.HandleFunc("/ws", handleConnections)
 
 		go handleMessages()
 
 		go func() {
 			for {
-				go echo("WebSocket server started on: " + cfg.Port)
-				err := http.ListenAndServe(":"+cfg.Port, nil)
+				go echo("WebSocket server started on: " + cfg.WS.Port)
+				err := http.ListenAndServe(":"+cfg.WS.Port, nil)
 				if err != nil {
 					log.Fatal("ListenAndServe: ", err)
 					fmt.Println("(╯°□°)╯ API server failed, restarting in...")

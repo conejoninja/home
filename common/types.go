@@ -1,9 +1,9 @@
 package common
 
 import (
-	"time"
-	"reflect"
 	"fmt"
+	"reflect"
+	"time"
 )
 
 type Device struct {
@@ -21,7 +21,7 @@ type Value struct {
 	Unit  string      `json:"unit,omitempty"`
 	Min   string      `json:"min,omitempty"`
 	Max   string      `json:"max,omitempty"`
-	Time  *time.Time   `json:"time,omitempty"`
+	Time  *time.Time  `json:"time,omitempty"`
 	Value interface{} `json:"value,omitempty"`
 }
 
@@ -36,11 +36,11 @@ type Param struct {
 }
 
 type Event struct {
-	Id       string    `json:"id"`
-	Message  string    `json:"message,omitempty"`
-	Priority uint8     `json:"priority,omitempty"`
+	Id       string     `json:"id"`
+	Message  string     `json:"message,omitempty"`
+	Priority uint8      `json:"priority,omitempty"`
 	Time     *time.Time `json:"time,omitempty"`
-	Extra    []Param   `json:"extra,omitempty"`
+	Extra    []Param    `json:"extra,omitempty"`
 }
 
 type Meta struct {
@@ -50,8 +50,31 @@ type Meta struct {
 	N   int     `json:"n,omitempty"`
 }
 
+type MqttConfig struct {
+	Protocol, Server, Port, User, Password, ClientId string
+}
+
+type HomeConfig struct {
+	DBPath   string
+	Mqtt     MqttConfig
+	WS       WebsocketConfig
+	Api      ApiConfig
+	TimeZone string
+	Location *time.Location
+}
+
+type WebsocketConfig struct {
+	Port    string
+	Enabled bool
+}
+
+type ApiConfig struct {
+	Port     string
+	Enabled  bool
+}
 
 var floatType = reflect.TypeOf(float64(0))
+
 func GetFloat(unk interface{}) (float64, error) {
 	v := reflect.ValueOf(unk)
 	v = reflect.Indirect(v)

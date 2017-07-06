@@ -38,13 +38,13 @@ func CalculateMeta(sensor string, start, end time.Time, prefix string) {
 }
 
 func CalculateMetaHour(sensor string, start time.Time) {
-	start = time.Date(start.Year(), start.Month(), start.Day(), start.Hour(), 0, 0, 0, time.UTC)
+	start = time.Date(start.Year(), start.Month(), start.Day(), start.Hour(), 0, 0, 0, cfg.Location)
 	end := start.Add(1 * time.Hour)
 	CalculateMeta(sensor, start, end, "hour-")
 }
 
 func CalculateMetaDay(sensor string, start time.Time) {
-	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC)
+	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.Location)
 	end := start.Add(24 * time.Hour)
 	CalculateMeta(sensor, start, end, "day-")
 }
@@ -56,14 +56,14 @@ func CalculateMetaWeek(sensor string, start time.Time) {
 	}
 	weekday = weekday - 1
 	start = start.Add(-1 * time.Duration(weekday) * 24 * time.Hour)
-	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC)
+	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.Location)
 	end := start.Add(7 * 24 * time.Hour)
 	CalculateMeta(sensor, start, end, "week-")
 }
 
 func CalculateMetaMonth(sensor string, start time.Time) {
-	start = time.Date(start.Year(), start.Month(), 1, 0, 0, 0, 0, time.UTC)
-	end := time.Date(start.Year(), start.Month()+1, 1, 0, 0, 0, 0, time.UTC)
+	start = time.Date(start.Year(), start.Month(), 1, 0, 0, 0, 0, cfg.Location)
+	end := time.Date(start.Year(), start.Month()+1, 1, 0, 0, 0, 0, cfg.Location)
 	end = start.Add(-1 * time.Second)
 	CalculateMeta(sensor, start, end, "hourly-")
 }
