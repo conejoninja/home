@@ -43,9 +43,9 @@ func main() {
 	}
 
 	if cfg.Api.Enabled {
-		api.Start(cfg.Api, db, mqttclient)
+		api.Start(cfg, db, mqttclient)
 	}
-	logger.Start(cfg.WS, db, mqttclient)
+	logger.Start(cfg, db, mqttclient)
 
 	for ;; {
 		fmt.Println(time.Now(), "Still alive")
