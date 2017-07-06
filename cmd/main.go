@@ -84,6 +84,7 @@ func readConfig() (cfg HomeConfig) {
 		cfg.DBPath = "./db"
 	}
 
+
 	/**
 	 * MQTT
 	 */
@@ -140,6 +141,10 @@ func readConfig() (cfg HomeConfig) {
 	}
 	if cfg.Api.Port == "" {
 		cfg.Api.Port = "80"
+	}
+	cfg.Api.TimeZone = os.Getenv("TIMEZONE")
+	if cfg.Api.TimeZone == "" {
+		cfg.Api.TimeZone = fmt.Sprint(viper.Get("timezone"))
 	}
 
 	/**

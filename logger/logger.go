@@ -126,7 +126,6 @@ var eventsHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messag
 }
 
 var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Println("NEW MESSAGE")
 	go echo("[" + msg.Topic() + "] " + string(msg.Payload()))
 	var values []common.Value
 	err := json.Unmarshal(msg.Payload(), &values)

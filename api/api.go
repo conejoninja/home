@@ -20,8 +20,10 @@ import (
 )
 
 type ApiConfig struct {
-	Port    string
-	Enabled bool
+	Port     string
+	TimeZone string
+	location *time.Location
+	Enabled  bool
 }
 
 type sensorResponse map[string]map[string][]common.Value
@@ -57,7 +59,7 @@ func meta(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	response := make(metaResponse)
 
 	start := time.Now()
-	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC)
+	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.location)
 
 	for _, id := range ids {
 		response[id] = db.GetMeta([]byte(id + "-day-" + strconv.Itoa(int(start.Unix()))))
@@ -162,16 +164,16 @@ func getPeriod(period string, current int) (start time.Time, end time.Time) {
 		}
 		weekday = weekday - 1
 		start = start.Add(-1 * time.Duration(weekday) * 24 * time.Hour)
-		start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC).AddDate(0, 0, 7*current)
+		start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.location).AddDate(0, 0, 7*current)
 		end = start.Add(7 * 24 * time.Hour).Add(-1 * time.Second)
 		break
 	case "month":
-		start = time.Date(start.Year(), start.Month(), 1, 0, 0, 0, 0, time.UTC).AddDate(0, current, 0)
+		start = time.Date(start.Year(), start.Month(), 1, 0, 0, 0, 0, cfg.location).AddDate(0, current, 0)
 		end = start.AddDate(0, 1, -1).Add(-1 * time.Second)
 		break
 	case "day":
 	default:
-		start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, time.UTC).AddDate(0, 0, current)
+		start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.location).AddDate(0, 0, current)
 		end = start.Add(24 * time.Hour).Add(-1 * time.Second)
 		break
 	}
@@ -182,6 +184,12 @@ func Start(apicfg ApiConfig, dbcon storage.Storage, mqttclient mqtt.Client) {
 	cfg = apicfg
 	db = dbcon
 	c = mqttclient
+
+	var err error
+	cfg.location, err = time.LoadLocation(cfg.TimeZone)
+	if err != nil {
+		cfg.location = time.UTC
+	}
 
 	router := httprouter.New()
 	router.GET("/sensor/:ids", cors(sensor))
