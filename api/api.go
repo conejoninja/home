@@ -50,14 +50,15 @@ func sensor(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 func meta(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 
 	ids := strings.Split(ps.ByName("ids"), ";")
+	period := ps.ByName("period")
+	if period != "week" && period != "month" && period != "hour" {
+		period = "day"
+	}
 	response := make(metaResponse)
 
-	start := time.Now()
-	start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.Location)
-
-	fmt.Println(start, "-day-" + strconv.Itoa(int(start.Unix())))
+	start, _ := getPeriod(period, 0)
 	for _, id := range ids {
-		response[id] = db.GetMeta([]byte(id + "-day-" + strconv.Itoa(int(start.Unix()))))
+		response[id] = db.GetMeta([]byte(id + "-" + period + "-" + strconv.Itoa(int(start.Unix()))))
 	}
 
 	valStr, _ := json.Marshal(response)
@@ -182,7 +183,9 @@ func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Cli
 
 	router := httprouter.New()
 	router.GET("/sensor/:ids", cors(sensor))
+	router.GET("/sensor/:ids/:period", cors(sensor))
 	router.GET("/meta/:ids", cors(meta))
+	router.GET("/meta/:ids/:period", cors(meta))
 	router.GET("/event/:id", cors(event))
 	router.GET("/event/:id/:count", cors(event))
 	router.GET("/devices", cors(devices))
