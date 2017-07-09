@@ -17,7 +17,7 @@ In order to interact together, devices communicates with each other through a MQ
 
 ![Global view](https://conejoninja.github.io/home/images/diagram.v2.png)
 
-Devices on the left size of the image (rover, food, device x) are connected to through wifi or ethernet to the home network. Modules on the right (logger, cc, dashboard) reside in an external server along with the MQTT server, but they could live in a Raspberry Pi or similar inside the home network.
+Devices on the left size of the image (rover, food, device x) are connected to through wifi or ethernet to the home network. Modules on the right (logger, api, database, dashboard) reside in an external server along with the MQTT server, but they could live in a Raspberry Pi or similar inside the home network.
 
 ## Protocol
 
@@ -28,21 +28,27 @@ I decided to created my own protocol sinces I didn't find any that suits my need
 
 For the MQTT server I choose to use [Mosquitto](https://mosquitto.org/) inside a [Docker](http://docker.com/) running on a external server.
 
-## Logger
+## Home (Logger + API)
 
-Logger is running program that listen to everything on the network and saves the important information (sensor data, events and devices' descriptions) to a database, for later consumption and stats. Logger is written in Go.
+Due to the nature of the database ([Badger](https://github.com/dgraph-io/badger)) and the amount of code shared between both of them, I decided to merge the logger and the API in one single service. Both are written in Go.
+
+### Logger 
+
+The logger just *log* almost all messages from the MQTT network and saves them in the database (devices, values, events) to be later consumed by the API or any other service.
+
+### API
+
+It offer a simple API to access the information of the devices, sensors and events on the network. It also allows the user to send commands to the devices.
+
 
 ## Database
 
 For the database I choose to use [Badger](https://github.com/dgraph-io/badger), Go-native key-value database. 
 
-## Command and Control (CC)
 
-Here is where the real magic happens, Go program that automates tasks based on the information stored in the database, such as if it's too hot, switch on the fan.
+## Dashboard
 
-## Dashboard / API
-
-The dashboard/API to consume the information off of the database and show some nice charts to the users (web, mobile app) and allow them to manually perform actions or request additional data.
+The dashboar uses the API to consume the information off of the database and show some nice charts to the users (web, mobile app) and allow them to manually perform actions or request additional data.
  
  
 ## Devices
