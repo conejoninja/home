@@ -318,7 +318,7 @@
 
 <p><img src="https://conejoninja.github.io/home/images/diagram.v2.png" alt="Global view" /></p>
 
-<p>Devices on the left size of the image (rover, food, device x) are connected to through wifi or ethernet to the home network. Modules on the right (logger, cc, dashboard) reside in an external server along with the MQTT server, but they could live in a Raspberry Pi or similar inside the home network.</p>
+<p>Devices on the left size of the image (rover, food, device x) are connected to through wifi or ethernet to the home network. Modules on the right (logger, api, database, dashboard) reside in an external server along with the MQTT server, but they could live in a Raspberry Pi or similar inside the home network.</p>
 
 <h2 id="protocol">Protocol</h2>
 
@@ -328,21 +328,25 @@
 
 <p>For the MQTT server I choose to use <a href="https://mosquitto.org/">Mosquitto</a> inside a <a href="http://docker.com/">Docker</a> running on a external server.</p>
 
-<h2 id="logger">Logger</h2>
+<h2 id="home-logger-api">Home (Logger + API)</h2>
 
-<p>Logger is running program that listen to everything on the network and saves the important information (sensor data, events and devices&rsquo; descriptions) to a database, for later consumption and stats. Logger is written in Go.</p>
+<p>Due to the nature of the database (<a href="https://github.com/dgraph-io/badger">Badger</a>) and the amount of code shared between both of them, I decided to merge the logger and the API in one single service. Both are written in Go.</p>
+
+<h3 id="logger">Logger</h3>
+
+<p>The logger just <em>log</em> almost all messages from the MQTT network and saves them in the database (devices, values, events) to be later consumed by the API or any other service.</p>
+
+<h3 id="api">API</h3>
+
+<p>It offer a simple API to access the information of the devices, sensors and events on the network. It also allows the user to send commands to the devices.</p>
 
 <h2 id="database">Database</h2>
 
 <p>For the database I choose to use <a href="https://github.com/dgraph-io/badger">Badger</a>, Go-native key-value database.</p>
 
-<h2 id="command-and-control-cc">Command and Control (CC)</h2>
+<h2 id="dashboard">Dashboard</h2>
 
-<p>Here is where the real magic happens, Go program that automates tasks based on the information stored in the database, such as if it&rsquo;s too hot, switch on the fan.</p>
-
-<h2 id="dashboard-api">Dashboard / API</h2>
-
-<p>The dashboard/API to consume the information off of the database and show some nice charts to the users (web, mobile app) and allow them to manually perform actions or request additional data.</p>
+<p>The dashboar uses the API to consume the information off of the database and show some nice charts to the users (web, mobile app) and allow them to manually perform actions or request additional data.</p>
 
 <h2 id="devices">Devices</h2>
 
