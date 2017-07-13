@@ -484,6 +484,8 @@
 
 <h2 id="stl-3d-files">STL/3D files</h2>
 
+<p><img src="https://conejoninja.github.io/home/images/food/food0103.jpg" alt="rabbit feeder" title="Rabbit food 01" /></p>
+
 <p>STL files for 3D printing could be found in the <a href="https://github.com/conejoninja/home_food/tree/master/3Dfiles">project repository</a>. They are quite printer-friendly, but supports are needed for a few of them. For everything food-related you should use PLA instead of ABS, as PLA is  Generally Recognized As Safe (GRAS) when used in contact with food by <a href="http://www.sciencedirect.com/science/article/pii/027869159400145E">some studies</a>, but there are a <a href="https://pinshape.com/blog/3d-printing-food-safe/">few things</a> to have in mind.</p>
 
 <p>Looking back, there are a few things I would change from the model. Printing takes some time and I don&rsquo;t like wasting plastic, I made improvements and small modifications using existing parts when possible. For example, the rotary encoder wires are visible, which could be a problem with animals that bite most things at their reach.</p>
@@ -498,6 +500,53 @@
   <iframe src="//www.youtube.com/embed/4CCGwA13kiI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
  </div>
 
+
+<h2 id="discovery-json">Discovery JSON</h2>
+
+<p>During discovery, food01 will send the following description message:</p>
+
+<pre><code>{
+    &quot;id&quot;:&quot;food01&quot;,
+    &quot;name&quot;:&quot;Dulicomida 3000&quot;,
+    &quot;version&quot;:&quot;1.0.0&quot;,
+    &quot;out&quot;:[
+        {&quot;id&quot;:&quot;t1&quot;,&quot;name&quot;:&quot;temperature&quot;},
+        {&quot;id&quot;:&quot;h1&quot;,&quot;name&quot;:&quot;humidity&quot;},
+        {&quot;id&quot;:&quot;m1&quot;,&quot;name&quot;:&quot;memory1&quot;},
+        {&quot;id&quot;:&quot;m2&quot;,&quot;name&quot;:&quot;memory2&quot;},
+        {&quot;id&quot;:&quot;m3&quot;,&quot;name&quot;:&quot;alarm1&quot;},
+        {&quot;id&quot;:&quot;m4&quot;,&quot;name&quot;:&quot;alarm2&quot;},
+        {&quot;id&quot;:&quot;m5&quot;,&quot;name&quot;:&quot;bigqty&quot;},
+        {&quot;id&quot;:&quot;m6&quot;,&quot;name&quot;:&quot;smallqty&quot;}
+    ],
+    &quot;methods&quot;:[
+        {&quot;name&quot;:&quot;food&quot;},
+        {&quot;name&quot;:&quot;ping&quot;},
+        {&quot;name&quot;:&quot;setmem&quot;,&quot;params&quot;:[{&quot;name&quot;:&quot;id&quot;},{&quot;name&quot;:&quot;value&quot;}]},
+        {&quot;name&quot;:&quot;getmem&quot;}
+    ]
+}
+</code></pre>
+
+<p>There are 8 output values. m1-m6 are explained in the <a href="#memory">section below</a> and are only updated on request (by a <em>getmem</em> call). t1 (temperature) and h1 (humidity), are sensor data that are update every 15 minutes if an internet connection is available and the MQTT server is working. You could make 4 different request to the device. <em>ping</em> will reply with <em>pong</em> just to check the device is still alive. A <em>food</em> request will dispense a small amount of food. You could change the configuration of the device with <em>setmem</em> and get the actual values in memory with <em>getmem</em>. Since the device is mostly deepsleeping, it will execute the commands the next time it wakes up as long as the MQTT message was marked as persistent. You could send several commands at the same time in the same request, but if you make several request before it wakes up, only the last one will be executed.</p>
+
+<h2 id="memory">Memory</h2>
+
+<p>The rabbit feeder stores some settings (and other data) in a non-volatile memory chip, thanks to the DS1307 AT24C32. It can be configured remotely with the <em>setmem</em> function call, more information in the <a href="/home/protocol/#method-calling-messages">protocol page (method-calling-messages)</a>. There are six different settings:</p>
+
+<ul>
+<li>memory1: unix timestamp (from Jan 1st 2000) for next alarm1 to be executed. Example value: <em>553291190</em></li>
+<li>memory2: unix timestamp (from Jan 1st 2000) for next alarm2 to be executed. Example value: <em>553330790</em></li>
+<li>alarm1: time for the first alarm (big amount of food) in 24h format without symbols. Example value: <em>2030</em> (2030 = 20:30 = 8:30pm)</li>
+<li>alarm2: time for the second alarm (small amount of food) in 24h format without symbols. Example value: <em>2030</em> (745 = 7:45 = 7:45am)</li>
+<li>bigqty: minimum number of steps of the rotary encoder to dispense food for the first alarm</li>
+<li>smallqty: minimum number of steps of the rotary encoder to dispense food for the second alarm</li>
+</ul>
+
+<p><strong>Note</strong>: memory1 and memory2 are the timestamp from the Jan 1st of 2000, you need to substract 946684800 from the <em>real</em> timestamp.
+07/13/2017 @ 7:59pm (UTC) is equivalent to 1499975990 and for the device, it&rsquo;s 553291190.</p>
+
+<p><img src="https://conejoninja.github.io/home/images/food/food0102.jpg" alt="rabbit feeder" title="Rabbit food 01" /></p>
 
 
 			<aside class="copyright" role="note">

@@ -132,6 +132,9 @@ There could be delays while connecting to the wifi network, or take more time to
 
 ## STL/3D files
 
+![rabbit feeder](https://conejoninja.github.io/home/images/food/food0103.jpg "Rabbit food 01")
+
+
 STL files for 3D printing could be found in the [project repository](https://github.com/conejoninja/home_food/tree/master/3Dfiles). They are quite printer-friendly, but supports are needed for a few of them. For everything food-related you should use PLA instead of ABS, as PLA is  Generally Recognized As Safe (GRAS) when used in contact with food by [some studies](http://www.sciencedirect.com/science/article/pii/027869159400145E), but there are a [few things](https://pinshape.com/blog/3d-printing-food-safe/) to have in mind.
 
 
@@ -145,3 +148,51 @@ Assembling is very easy and straight forward, but I made a video of the disassem
 
 {{< youtube 4CCGwA13kiI >}}
 
+
+## Discovery JSON
+
+During discovery, food01 will send the following description message:
+
+```
+{
+    "id":"food01",
+    "name":"Dulicomida 3000",
+    "version":"1.0.0",
+    "out":[
+        {"id":"t1","name":"temperature"},
+        {"id":"h1","name":"humidity"},
+        {"id":"m1","name":"memory1"},
+        {"id":"m2","name":"memory2"},
+        {"id":"m3","name":"alarm1"},
+        {"id":"m4","name":"alarm2"},
+        {"id":"m5","name":"bigqty"},
+        {"id":"m6","name":"smallqty"}
+    ],
+    "methods":[
+        {"name":"food"},
+        {"name":"ping"},
+        {"name":"setmem","params":[{"name":"id"},{"name":"value"}]},
+        {"name":"getmem"}
+    ]
+}
+```
+
+There are 8 output values. m1-m6 are explained in the [section below](#memory) and are only updated on request (by a *getmem* call). t1 (temperature) and h1 (humidity), are sensor data that are update every 15 minutes if an internet connection is available and the MQTT server is working. You could make 4 different request to the device. *ping* will reply with *pong* just to check the device is still alive. A *food* request will dispense a small amount of food. You could change the configuration of the device with *setmem* and get the actual values in memory with *getmem*. Since the device is mostly deepsleeping, it will execute the commands the next time it wakes up as long as the MQTT message was marked as persistent. You could send several commands at the same time in the same request, but if you make several request before it wakes up, only the last one will be executed.
+
+
+
+## Memory
+
+The rabbit feeder stores some settings (and other data) in a non-volatile memory chip, thanks to the DS1307 AT24C32. It can be configured remotely with the *setmem* function call, more information in the [protocol page (method-calling-messages)](/home/protocol/#method-calling-messages). There are six different settings:
+
+* memory1: unix timestamp (from Jan 1st 2000) for next alarm1 to be executed. Example value: *553291190* 
+* memory2: unix timestamp (from Jan 1st 2000) for next alarm2 to be executed. Example value: *553330790*
+* alarm1: time for the first alarm (big amount of food) in 24h format without symbols. Example value: *2030* (2030 = 20:30 = 8:30pm)
+* alarm2: time for the second alarm (small amount of food) in 24h format without symbols. Example value: *2030* (745 = 7:45 = 7:45am)
+* bigqty: minimum number of steps of the rotary encoder to dispense food for the first alarm
+* smallqty: minimum number of steps of the rotary encoder to dispense food for the second alarm
+
+**Note**: memory1 and memory2 are the timestamp from the Jan 1st of 2000, you need to substract 946684800 from the *real* timestamp. 
+07/13/2017 @ 7:59pm (UTC) is equivalent to 1499975990 and for the device, it's 553291190.
+
+![rabbit feeder](https://conejoninja.github.io/home/images/food/food0102.jpg "Rabbit food 01")
