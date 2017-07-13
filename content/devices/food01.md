@@ -149,6 +149,8 @@ Assembling is very easy and straight forward, but I made a video of the disassem
 {{< youtube 4CCGwA13kiI >}}
 
 
+**Note**: file dish.stl is a bowl/dish for the food, to be use in place of front.cover.stl
+
 ## Discovery JSON
 
 During discovery, food01 will send the following description message:
