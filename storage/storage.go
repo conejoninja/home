@@ -12,6 +12,7 @@ type Storage interface {
 	AddDevice(id []byte, device common.Device) error
 	AddMeta(id []byte, meta common.Meta) error
 	GetValue(id []byte) common.Value
+	GetLastValue(id string) common.Value
 	GetEvent(id []byte) common.Event
 	GetMeta(id []byte) common.Meta
 	GetValuesBetweenTime(id string, start, end time.Time) []common.Value

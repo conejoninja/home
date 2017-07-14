@@ -69,7 +69,7 @@ func CalculateMetaMonth(sensor string, start time.Time) {
 }
 
 func CalculateMetaAll(sensor string, start time.Time) {
-	CalculateMetaHour(sensor, start)
+	//CalculateMetaHour(sensor, start)
 	CalculateMetaDay(sensor, start)
 	CalculateMetaWeek(sensor, start)
 	CalculateMetaMonth(sensor, start)

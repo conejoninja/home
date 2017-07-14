@@ -19,8 +19,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-
 type sensorResponse map[string]map[string][]common.Value
+type lastSensorResponse map[string]common.Value
 type metaResponse map[string]common.Meta
 
 var db storage.Storage
@@ -41,6 +41,19 @@ func sensor(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		response[id]["current"] = db.GetValuesBetweenTime(id, start, end)
 		start, end = getPeriod(period, -1)
 		response[id]["past"] = db.GetValuesBetweenTime(id, start, end)
+	}
+
+	valStr, _ := json.Marshal(response)
+	fmt.Fprint(res, string(valStr))
+}
+
+func lastSensor(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+
+	ids := strings.Split(ps.ByName("ids"), ";")
+	response := make(lastSensorResponse)
+
+	for _, id := range ids {
+		response[id] = db.GetLastValue(id)
 	}
 
 	valStr, _ := json.Marshal(response)
@@ -152,6 +165,9 @@ func cors(h httprouter.Handle) httprouter.Handle {
 
 func getPeriod(period string, current int) (start time.Time, end time.Time) {
 	start = time.Now()
+	if period != "week" && period != "month" {
+		period = "day"
+	}
 	switch period {
 	case "week":
 		weekday := int(start.Weekday())
@@ -168,9 +184,10 @@ func getPeriod(period string, current int) (start time.Time, end time.Time) {
 		end = start.AddDate(0, 1, -1).Add(-1 * time.Second)
 		break
 	case "day":
-	default:
 		start = time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, cfg.Location).AddDate(0, 0, current)
 		end = start.Add(24 * time.Hour).Add(-1 * time.Second)
+		break
+	default:
 		break
 	}
 	return
@@ -183,6 +200,7 @@ func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Cli
 
 	router := httprouter.New()
 	router.GET("/sensor/:ids", cors(sensor))
+	router.GET("/last/sensor/:ids", cors(lastSensor))
 	router.GET("/sensor/:ids/:period", cors(sensor))
 	router.GET("/meta/:ids", cors(meta))
 	router.GET("/meta/:ids/:period", cors(meta))

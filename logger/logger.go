@@ -13,10 +13,10 @@ import (
 
 	"github.com/conejoninja/home/common"
 	"github.com/conejoninja/home/storage"
+	"github.com/conejoninja/home/telegram"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/gorilla/websocket"
 )
-
 
 var db storage.Storage
 var c mqtt.Client
@@ -116,6 +116,7 @@ var eventsHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messag
 	err := json.Unmarshal(msg.Payload(), &evt)
 	if err == nil {
 		db.AddEvent(evt.Id, evt)
+		telegram.NotifyEvent(evt)
 	} else {
 		fmt.Println(err)
 	}
@@ -174,4 +175,3 @@ func echo(s string) {
 	fmt.Println(s)
 	broadcast <- []byte(s)
 }
-

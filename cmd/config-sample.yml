@@ -9,7 +9,12 @@ mqtt_client_id: home-local
 
 api_enabled: true
 api_port: 80
-timezone: ""
+timezone: 
 
 websocket_enabled: true
 websocket_port: 8055
+
+tg_token: 
+tg_chats: 
+
+

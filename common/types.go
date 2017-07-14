@@ -59,6 +59,7 @@ type HomeConfig struct {
 	Mqtt     MqttConfig
 	WS       WebsocketConfig
 	Api      ApiConfig
+	Tg       TelegramConfig
 	TimeZone string
 	Location *time.Location
 }
@@ -69,8 +70,14 @@ type WebsocketConfig struct {
 }
 
 type ApiConfig struct {
-	Port     string
-	Enabled  bool
+	Port    string
+	Enabled bool
+}
+
+type TelegramConfig struct {
+	Token   string
+	Chats   []int64
+	Enabled bool
 }
 
 var floatType = reflect.TypeOf(float64(0))

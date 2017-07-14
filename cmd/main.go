@@ -3,16 +3,19 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
+
+	"time"
 
 	"github.com/conejoninja/home/api"
+	"github.com/conejoninja/home/common"
 	"github.com/conejoninja/home/logger"
 	"github.com/conejoninja/home/storage"
+	"github.com/conejoninja/home/telegram"
 	"github.com/eclipse/paho.mqtt.golang"
 	"github.com/spf13/viper"
-	"time"
-	"github.com/conejoninja/home/common"
 )
-
 
 // STORAGE
 var db storage.Storage
@@ -45,9 +48,12 @@ func main() {
 	if cfg.Api.Enabled {
 		api.Start(cfg, db, mqttclient)
 	}
+	if cfg.Tg.Enabled {
+		telegram.Start(cfg)
+	}
 	logger.Start(cfg, db, mqttclient)
 
-	for ;; {
+	for {
 		fmt.Println(time.Now(), "Still alive")
 		time.Sleep(5 * time.Minute)
 
@@ -84,8 +90,6 @@ func readConfig() (cfg common.HomeConfig) {
 	if err != nil {
 		cfg.Location = time.UTC
 	}
-
-
 
 	/**
 	 * MQTT
@@ -165,5 +169,36 @@ func readConfig() (cfg common.HomeConfig) {
 		cfg.WS.Port = "8055"
 	}
 
+	/**
+	 *TELEGRAM
+	 */
+	tg_enabled_str := os.Getenv("TG_ENABLED")
+	cfg.Tg.Token = os.Getenv("TG_TOKEN")
+	tg_chats_str := os.Getenv("TG_CHATS")
+	if tg_enabled_str == "" {
+		tg_enabled_str = fmt.Sprint(viper.Get("tg_enabled"))
+	}
+	if cfg.Tg.Token == "" {
+		cfg.Tg.Token = fmt.Sprint(viper.Get("tg_token"))
+	}
+	if tg_chats_str == "" {
+		tg_chats_str = fmt.Sprint(viper.Get("tg_chats"))
+	}
+
+	cfg.Tg.Enabled = false
+	if tg_enabled_str == "1" || tg_enabled_str == "true" {
+		cfg.Tg.Enabled = true
+	}
+	tmpChats := strings.Split(tg_chats_str, ",")
+	l := len(tmpChats)
+	cfg.Tg.Chats = make([]int64, l)
+
+	for k, v := range tmpChats {
+		i, err := strconv.Atoi(v)
+		if err != nil {
+			fmt.Println("Telegram Chat not integer")
+		}
+		cfg.Tg.Chats[k] = int64(i)
+	}
 	return
 }

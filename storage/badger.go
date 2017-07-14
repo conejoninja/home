@@ -165,6 +165,28 @@ func (db *Badger) GetValue(id []byte) common.Value {
 	return value
 }
 
+func (db *Badger) GetLastValue(id string) common.Value {
+	var value common.Value
+	itrOpt := badger.IteratorOptions{
+		PrefetchSize: 1000,
+		FetchValues:  true,
+		Reverse:      true,
+	}
+	itr := db.valuesKV.NewIterator(itrOpt)
+	for itr.Seek([]byte(id + "-9")); itr.Valid(); itr.Next() {
+		item := itr.Item()
+		if id == string(item.Key()[:len(id)]) {
+			err := json.Unmarshal(item.Value(), &value)
+			if err != nil {
+				// Do something ?
+			}
+			return value
+		}
+		break
+	}
+	return value
+}
+
 func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common.Value {
 
 	sensor := []byte(id + "-" + strconv.Itoa(int(start.Unix())))
