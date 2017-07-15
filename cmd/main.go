@@ -29,13 +29,13 @@ func main() {
 
 	db = storage.NewBadger(cfg.DBPath)
 
-	opts := mqtt.NewClientOptions().AddBroker(cfg.Mqtt.Protocol + "://" + cfg.Mqtt.Server + ":" + cfg.Mqtt.Port)
-	opts.SetClientID(cfg.Mqtt.ClientId)
-	if cfg.Mqtt.User != "" {
-		opts.SetUsername(cfg.Mqtt.User)
+	opts := mqtt.NewClientOptions().AddBroker(cfg.MQTT.Protocol + "://" + cfg.MQTT.Server + ":" + cfg.MQTT.Port)
+	opts.SetClientID(cfg.MQTT.ClientID)
+	if cfg.MQTT.User != "" {
+		opts.SetUsername(cfg.MQTT.User)
 	}
-	if cfg.Mqtt.Password != "" {
-		opts.SetPassword(cfg.Mqtt.Password)
+	if cfg.MQTT.Password != "" {
+		opts.SetPassword(cfg.MQTT.Password)
 	}
 	//opts.SetDefaultPublishHandler(defaultHandler)
 
@@ -45,7 +45,7 @@ func main() {
 		panic(token.Error())
 	}
 
-	if cfg.Api.Enabled {
+	if cfg.API.Enabled {
 		api.Start(cfg, db, mqttclient)
 	}
 	if cfg.Tg.Enabled {
@@ -94,59 +94,59 @@ func readConfig() (cfg common.HomeConfig) {
 	/**
 	 * MQTT
 	 */
-	cfg.Mqtt.Protocol = os.Getenv("MQTT_PROTOCOL")
-	cfg.Mqtt.Server = os.Getenv("MQTT_SERVER")
-	cfg.Mqtt.Port = os.Getenv("MQTT_PORT")
-	cfg.Mqtt.User = os.Getenv("MQTT_USER")
-	cfg.Mqtt.Password = os.Getenv("MQTT_PASSWORD")
-	cfg.Mqtt.ClientId = os.Getenv("MQTT_CLIENT_ID")
+	cfg.MQTT.Protocol = os.Getenv("MQTT_PROTOCOL")
+	cfg.MQTT.Server = os.Getenv("MQTT_SERVER")
+	cfg.MQTT.Port = os.Getenv("MQTT_PORT")
+	cfg.MQTT.User = os.Getenv("MQTT_USER")
+	cfg.MQTT.Password = os.Getenv("MQTT_PASSWORD")
+	cfg.MQTT.ClientID = os.Getenv("MQTT_CLIENT_ID")
 
-	if cfg.Mqtt.Protocol == "" {
-		cfg.Mqtt.Protocol = fmt.Sprint(viper.Get("mqtt_protocol"))
+	if cfg.MQTT.Protocol == "" {
+		cfg.MQTT.Protocol = fmt.Sprint(viper.Get("mqtt_protocol"))
 	}
-	if cfg.Mqtt.Server == "" {
-		cfg.Mqtt.Server = fmt.Sprint(viper.Get("mqtt_server"))
+	if cfg.MQTT.Server == "" {
+		cfg.MQTT.Server = fmt.Sprint(viper.Get("mqtt_server"))
 	}
-	if cfg.Mqtt.Port == "" {
-		cfg.Mqtt.Port = fmt.Sprint(viper.Get("mqtt_port"))
+	if cfg.MQTT.Port == "" {
+		cfg.MQTT.Port = fmt.Sprint(viper.Get("mqtt_port"))
 	}
-	if cfg.Mqtt.User == "" {
-		cfg.Mqtt.User = fmt.Sprint(viper.Get("mqtt_user"))
+	if cfg.MQTT.User == "" {
+		cfg.MQTT.User = fmt.Sprint(viper.Get("mqtt_user"))
 	}
-	if cfg.Mqtt.Password == "" {
-		cfg.Mqtt.Password = fmt.Sprint(viper.Get("mqtt_password"))
+	if cfg.MQTT.Password == "" {
+		cfg.MQTT.Password = fmt.Sprint(viper.Get("mqtt_password"))
 	}
-	if cfg.Mqtt.ClientId == "" {
-		cfg.Mqtt.ClientId = fmt.Sprint(viper.Get("mqtt_client_id"))
+	if cfg.MQTT.ClientID == "" {
+		cfg.MQTT.ClientID = fmt.Sprint(viper.Get("mqtt_client_id"))
 	}
-	if cfg.Mqtt.Protocol == "" {
-		cfg.Mqtt.Protocol = "ws"
+	if cfg.MQTT.Protocol == "" {
+		cfg.MQTT.Protocol = "ws"
 	}
-	if cfg.Mqtt.Port == "" {
-		cfg.Mqtt.Port = "9001"
+	if cfg.MQTT.Port == "" {
+		cfg.MQTT.Port = "9001"
 	}
-	if cfg.Mqtt.ClientId == "" {
-		cfg.Mqtt.ClientId = "home-cmd"
+	if cfg.MQTT.ClientID == "" {
+		cfg.MQTT.ClientID = "home-cmd"
 	}
 
 	/**
 	 * API
 	 */
 	api_enabled_str := os.Getenv("API_ENABLED")
-	cfg.Api.Port = os.Getenv("API_PORT")
+	cfg.API.Port = os.Getenv("API_PORT")
 	if api_enabled_str == "" {
 		api_enabled_str = fmt.Sprint(viper.Get("api_enabled"))
 	}
-	if cfg.Api.Port == "" {
-		cfg.Api.Port = fmt.Sprint(viper.Get("api_port"))
+	if cfg.API.Port == "" {
+		cfg.API.Port = fmt.Sprint(viper.Get("api_port"))
 	}
 
-	cfg.Api.Enabled = false
+	cfg.API.Enabled = false
 	if api_enabled_str == "1" || api_enabled_str == "true" {
-		cfg.Api.Enabled = true
+		cfg.API.Enabled = true
 	}
-	if cfg.Api.Port == "" {
-		cfg.Api.Port = "80"
+	if cfg.API.Port == "" {
+		cfg.API.Port = "80"
 	}
 
 	/**

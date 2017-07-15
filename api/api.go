@@ -121,7 +121,7 @@ func call(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	p := 0
 	for k, v := range req.Form {
 		if len(v) > 0 {
-			params[p].Id = k
+			params[p].ID = k
 			params[p].Value = v[0]
 		}
 	}
@@ -193,6 +193,7 @@ func getPeriod(period string, current int) (start time.Time, end time.Time) {
 	return
 }
 
+// Start is the entry point of the API
 func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Client) {
 	cfg = homecfg
 	db = dbcon
@@ -212,7 +213,7 @@ func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Cli
 	go func() {
 		for {
 			fmt.Println("API started...")
-			log.Fatal(http.ListenAndServe(":"+cfg.Api.Port, router))
+			log.Fatal(http.ListenAndServe(":"+cfg.API.Port, router))
 			fmt.Println("(╯°□°)╯ API server failed, restarting in...")
 			time.Sleep(5 * time.Second)
 		}

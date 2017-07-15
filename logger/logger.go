@@ -26,7 +26,7 @@ var cfg common.HomeConfig
 var subscriptions map[string]bool
 var token mqtt.Token
 
-// wEBSOCKETS
+// WEBSOCKETS
 var clients = make(map[*websocket.Conn]bool)
 var broadcast = make(chan []byte)
 var upgrader = websocket.Upgrader{
@@ -35,6 +35,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+// Start is the entrypoint for the logger
 func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Client) {
 	cfg = homecfg
 	db = dbcon
@@ -79,10 +80,10 @@ func Start(homecfg common.HomeConfig, dbcon storage.Storage, mqttclient mqtt.Cli
 func restartDevices() {
 	devices := db.GetDevices()
 	for _, device := range devices {
-		subscriptions[device.Id] = true
-		go echo("Subscribed to " + device.Id)
-		if token = c.Subscribe(device.Id, 0, defaultHandler); token.WaitTimeout(10*time.Second) && token.Error() != nil {
-			subscriptions[device.Id] = false
+		subscriptions[device.ID] = true
+		go echo("Subscribed to " + device.ID)
+		if token = c.Subscribe(device.ID, 0, defaultHandler); token.WaitTimeout(10*time.Second) && token.Error() != nil {
+			subscriptions[device.ID] = false
 			go echo(fmt.Sprintln(token.Error()))
 			os.Exit(1)
 
@@ -95,11 +96,11 @@ var discoveryHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Mes
 	var device common.Device
 	err := json.Unmarshal(msg.Payload(), &device)
 	if err == nil {
-		db.AddDevice([]byte(device.Id), device)
-		if v, ok := subscriptions[device.Id]; !ok || !v {
-			subscriptions[device.Id] = true
-			if token = c.Subscribe(device.Id, 0, defaultHandler); token.Wait() && token.Error() != nil {
-				subscriptions[device.Id] = false
+		db.AddDevice([]byte(device.ID), device)
+		if v, ok := subscriptions[device.ID]; !ok || !v {
+			subscriptions[device.ID] = true
+			if token = c.Subscribe(device.ID, 0, defaultHandler); token.Wait() && token.Error() != nil {
+				subscriptions[device.ID] = false
 				fmt.Println(token.Error())
 				os.Exit(1)
 			}
@@ -115,7 +116,7 @@ var eventsHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messag
 	var evt common.Event
 	err := json.Unmarshal(msg.Payload(), &evt)
 	if err == nil {
-		db.AddEvent(evt.Id, evt)
+		db.AddEvent(evt.ID, evt)
 		telegram.NotifyEvent(evt)
 	} else {
 		fmt.Println(err)
@@ -133,7 +134,7 @@ var defaultHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			if value.Time != nil && !(*value.Time).IsZero() {
 				datetime = *value.Time
 			}
-			CalculateMetaAll(msg.Topic()+"-"+value.Id, datetime)
+			CalculateMetaAll(msg.Topic()+"-"+value.ID, datetime)
 		}
 	} else {
 		fmt.Println(err)

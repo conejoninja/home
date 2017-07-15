@@ -11,6 +11,7 @@ var cfg common.TelegramConfig
 var bot *tgbotapi.BotAPI
 var connected bool
 
+// Start is the entrypoint
 func Start(homecfg common.HomeConfig) {
 	cfg = homecfg.Tg
 
@@ -24,6 +25,7 @@ func Start(homecfg common.HomeConfig) {
 	bot.Debug = false
 }
 
+// Notify send a notification to every telegram client
 func Notify(message string) {
 	if connected {
 		for _, chatID := range cfg.Chats {
@@ -33,12 +35,13 @@ func Notify(message string) {
 	}
 }
 
+// NotifyEvent creates and send a notification from an event
 func NotifyEvent(evt common.Event) {
 	if evt.Message != "" {
 		msg := "⚠️ "
 		if evt.Priority == 0 {
 			msg = "✅ "
 		}
-		Notify(msg + evt.Message)
+		Notify(msg + "[" + evt.Time.String() + "] " + evt.Message)
 	}
 }
