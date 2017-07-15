@@ -9,18 +9,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
-    <title> - Home Automation project</title>
+    <title>Home - Home Automation project</title>
     <meta name="generator" content="Hugo 0.21" />
 
     
     <meta name="description" content="Home Automation system.">
     
-    <link rel="canonical" href="https://conejoninja.github.io/home/contributing/">
+    <link rel="canonical" href="https://conejoninja.github.io/home/home/">
     
     <meta name="author" content="conejoninja">
     
 
-    <meta property="og:url" content="https://conejoninja.github.io/home/contributing/">
+    <meta property="og:url" content="https://conejoninja.github.io/home/home/">
     <meta property="og:title" content="Home Automation project">
     <meta property="og:image" content="https://conejoninja.github.io/home/images/logo.png">
     <meta name="apple-mobile-web-app-title" content="Home Automation project">
@@ -97,7 +97,7 @@
     </div>
     <div class="stretch">
       <div class="title">
-        
+        Home
       </div>
     </div>
 
@@ -198,11 +198,14 @@
 
 
 
-<a  title="Home" href="/home/home/">
+<a class="current" title="Home" href="/home/home/">
 	
 	Home
 </a>
 
+
+<ul id="scrollspy">
+</ul>
 
 
   
@@ -270,14 +273,11 @@
 
 
 
-<a class="current" title="Contributing" href="/home/contributing/">
+<a  title="Contributing" href="/home/contributing/">
 	
 	Contributing
 </a>
 
-
-<ul id="scrollspy">
-</ul>
 
 
   
@@ -320,67 +320,51 @@
 
 	<article class="article">
 		<div class="wrapper">
-			<h1> </h1>
+			<h1>Home </h1>
 
 			
 
-<h1 id="contributing-guidelines">Contributing Guidelines</h1>
+<p>To log all the sensor data and be able to process it later, we use what we call <em>Home</em>. It&rsquo;s written in <a href="http://golang.org/">Go</a> and made of different configurable <em>module</em>. The two principal tasks are to log the sensor data in the <em>Logger</em> and serve it via the <em>API</em></p>
 
-<h2 id="code-of-conduct">Code of Conduct</h2>
+<h2 id="logger">Logger</h2>
 
-<p>This project is intended to be a safe, welcoming space for collaboration. All contributors are expected to adhere to the <a href="http://contributor-covenant.org">Contributor Covenant</a> code of conduct. Thank you for being kind to each other!</p>
+<p><a href="https://github.com/conejoninja/home/tree/master/logger">Source code</a></p>
 
-<h2 id="contributions-welcome">Contributions welcome!</h2>
+<p>Save sensor data and other information from the MQTT network in a database.</p>
 
-<p><strong>Before spending lots of time on something, ask for feedback on your idea first!</strong></p>
+<h2 id="api">API</h2>
 
-<p>Please search <a href="https://github.com/conejoninja/home/issues">issues</a> and <a href="https://github.com/conejoninja/home/pulls">pull requests</a> (or in any of the related projects) before adding something new! This helps avoid duplicating efforts and conversations.</p>
+<p><a href="https://github.com/conejoninja/home/tree/master/api">Source code</a></p>
 
-<p>This project welcomes any kind of contribution! Here are a few suggestions:</p>
+<p>Create a HTTP server and listen for requests.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>By default, <em>Home</em> will use environment variables if available for its configuration, and if it&rsquo;s not the case, it will read the setting from a <a href="https://github.com/conejoninja/home/blob/master/cmd/config-sample.yml">config.yml</a> file in the same folder. You could use a mix of env vars and config.yml. I choose this to be able to create a <a href="https://hub.docker.com/r/conejo/home/">docker image</a> and configure it later via docker-compose (or docker run) without using a custom image with the file. I know, it&rsquo;s discouraged and not the best practices, but I also needed to make it work.</p>
+
+<h3 id="config-yml-options">config.yml options</h3>
 
 <ul>
-<li><strong>Ideas</strong>: participate in an issue thread or start your own to have your voice heard.</li>
-<li><strong>Writing</strong>: contribute your expertise in an area by helping expand the included content.</li>
-<li><strong>Copy editing</strong>: fix typos, clarify language, and generally improve the quality of the content.</li>
-<li><strong>Formatting</strong>: help keep content easy to read with consistent formatting.</li>
-<li><strong>Code</strong>: help maintain and improve the project codebase.</li>
+<li>db_path: path to your database</li>
+<li>mqtt_server: your MQTT server</li>
+<li>mqtt_port: MQTT port (9001 by default)</li>
+<li>mqtt_protocol: MQTT protocol (ws by default)</li>
+<li>mqtt_user: MQTT user</li>
+<li>mqtt_password: MQTT password</li>
+<li>mqtt_client_id: client id, it could be anything</li>
+<li>api_enabled: to enable the API or only log sensor data</li>
+<li>api_port: API port</li>
+<li>timezone: Important if your server is not in the same timezone as you (example &ldquo;Europe/Madrid&rdquo;)</li>
+<li>websocket_enabled: create a websocket server and publish all the messages to see realtime information</li>
+<li>websocket_port: websocket port</li>
+<li>tg_enabled: use a Telegram bot to notify you events on your network</li>
+<li>tg_token: Telegram bot token</li>
+<li>tg_chats: Telegram chat&rsquo;s ID to notify</li>
 </ul>
 
-<h2 id="how-to-become-a-contributor-and-submit-your-own-code">How to become a contributor and submit your own code</h2>
+<h2 id="environment-variables">Environment variables</h2>
 
-<h3 id="contributor-license-agreements">Contributor License Agreements</h3>
-
-<p>We&rsquo;d love to accept your patches! Before we can take them, we
-have to jump a couple of legal hurdles. Please fill the <a href="https://gist.github.com/conejoninja/4cfea5c8a437a1f1cf65b66a857c7b74">Contributor License Agreement
-(CLA)</a>.</p>
-
-<p>This shoudl be an automated process if you send us some pull-request.</p>
-
-<h2 id="contributing-a-patch">Contributing A Patch</h2>
-
-<ol>
-<li>Submit an issue describing your proposed change to the repo in question.</li>
-<li>The repo owner will respond to your issue promptly.</li>
-<li>If your proposed change is accepted, and you haven&rsquo;t already done so, sign a
-Contributor License Agreement (see details above).</li>
-<li>Fork the desired repo, develop and test your code changes.</li>
-<li>Ensure that your code adheres to the existing style in the sample to which
-you are contributing.</li>
-<li>Ensure that your code has an appropriate set of unit tests which all pass.</li>
-<li>Submit a pull request.</li>
-</ol>
-
-<h2 id="other-contributions">Other contributions</h2>
-
-<p>If you don&rsquo;t have enough time for any of the tasks above, and you want to contribute with the project, you could buy us some coffee, beer and pizza.</p>
-
-<p><img src="https://conejoninja.github.io/home/images/ribbon.png" alt="" /></p>
-
-<p>If you would like to donate via Bitcoin, please send your donation to this wallet:</p>
-
-<p><img src="https://conejoninja.github.io/home/images/qr.png" alt="" /></p>
-
-<p>Bitcoin: <strong>1G9d7uVvioNt8Emsv6fVmCdAPc41nX1c8J</strong></p>
+<p>Enviroment variables are exactly the same as the options of config.yml but in <em>upper case</em>, ie. db_path =&gt; DB_PATH.</p>
 
 
 			<aside class="copyright" role="note">
@@ -399,7 +383,7 @@ you are contributing.</li>
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="https://conejoninja.github.io/home/" title="Home Automation project">
+      <a href="https://conejoninja.github.io/home/devices/food01/" title="Rabbit feeder">
         <span class="direction">
           Previous
         </span>
@@ -409,7 +393,7 @@ you are contributing.</li>
           </div>
           <div class="stretch">
             <div class="title">
-              Home Automation project
+              Rabbit feeder
             </div>
           </div>
         </div>
@@ -418,6 +402,22 @@ you are contributing.</li>
   </div>
 
   <div class="next">
+  
+      <a href="https://conejoninja.github.io/home/protocol/" title="Protocol">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Protocol
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
   
   </div>
 </nav>

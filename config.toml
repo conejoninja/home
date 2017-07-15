@@ -47,23 +47,28 @@ publishDir = "."
 
 
 [[menu.main]]
-	name   = "Home"
+	name   = "General"
 	url    = ""
 	weight = 1
+
+[[menu.main]]
+	name   = "Home"
+	url    = "home/"
+	weight = 10
 
 [[menu.main]]
 	identifier = "devices"
 	name   = "Devices"
 	url    = "devices/"
-	weight = 10
+	weight = 20
 
 [[menu.main]]
 	name   = "Protocol"
 	url    = "protocol/"
-	weight = 20
+	weight = 30
 
 [[menu.main]]
 	name   = "Contributing"
 	url    = "contributing/"
-	weight = 30
+	weight = 40
 

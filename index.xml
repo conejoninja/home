@@ -34,6 +34,19 @@ Idea and motivation The main idea was to be able to feed these two little rascal
     </item>
     
     <item>
+      <title>Home</title>
+      <link>https://conejoninja.github.io/home/home/</link>
+      <pubDate>Mon, 12 Jun 2017 17:45:11 +0100</pubDate>
+      
+      <guid>https://conejoninja.github.io/home/home/</guid>
+      <description>To log all the sensor data and be able to process it later, we use what we call Home. It&amp;rsquo;s written in Go and made of different configurable module. The two principal tasks are to log the sensor data in the Logger and serve it via the API
+Logger Source code
+Save sensor data and other information from the MQTT network in a database.
+API Source code
+Create a HTTP server and listen for requests.</description>
+    </item>
+    
+    <item>
       <title>Protocol</title>
       <link>https://conejoninja.github.io/home/protocol/</link>
       <pubDate>Mon, 12 Jun 2017 17:45:11 +0100</pubDate>
