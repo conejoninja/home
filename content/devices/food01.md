@@ -80,7 +80,7 @@ Due to the limitations of the ESP12F, the RXD pin is used to drive the motor. Th
 
 ## Motor
 
-For the first design I used a 360 servo motor I had lying around, it turns out it didn't have enough force and jams from time to time. I ended up using one of the *famously cheap* yellow dc motors used in several robot kits. These motors take from 3V to 6V, and have enough force for our purpose.
+For the first design I used a 360 servo motor I had lying around, it turns out it didn't have enough force and jams from time to time. I ended up using one of the *famously cheap* yellow dc motors used in several robot kits. These motors take from 3V to 12V, and have enough force for our purpose*.
 
 ![dc motor](https://conejoninja.github.io/home/images/food/motor1.jpg "dc motor")
 
@@ -97,7 +97,9 @@ At code level, to avoid jams we move forward the motor a few miliseconds and the
  To control the motor we use a *H-bridge* with the L293B, you could use a L293D or any other similar component. 
  
  
-![h bridge](https://conejoninja.github.io/home/images/food/hbridge.jpg "h bridge") 
+![h bridge](https://conejoninja.github.io/home/images/food/hbridge.jpg "h bridge")
+
+**Note**: After some months of use, the motor seems to not have enough force anymore (probably something got stuck or moved). I changed the DC-DC converter and the power source, now feed 12V to the motor, seems to work fine.
  
  
 ## Rotary encoder
