@@ -34,7 +34,7 @@ The feeder will wake up each 15 minutes, send the temperature and humidity to a 
 * L293B / L293D half-bridge
 * DC motor (one of those cheap geared yellow motors)
 * Rotary encoder
-* DC-DC buck converter with 3.3V output (YL-46, AMS1117 based)
+* DC-DC buck converter with 3.3V output (YL-46, AMS1117 based) * see note at motor section
 * 2x 10K ohm resistors
 * 4x 1N4007
 * 3D printed parts from STL files
