@@ -38,7 +38,7 @@ The feeder will wake up each 15 minutes, send the temperature and humidity to a 
 * 2x 10K ohm resistors
 * 4x 1N4007
 * 3D printed parts from STL files
-* 6V power source
+* 6V-12 power source
 * 6x M3 screws and nuts
 * Some wire
 * Some glue
@@ -47,9 +47,11 @@ The feeder will wake up each 15 minutes, send the temperature and humidity to a 
 
 ![the circuit](https://github.com/conejoninja/home_food/raw/master/circuit.png "The circuit")
 
-The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there's a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.
+The DC motor and the L293D/L293B are powered by the 6V-12V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there's a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.
 
-Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn't find Fritzing components for them. 
+Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn't find Fritzing components for them.
+
+Note: I initially use a 6V power source and it worked fine for a while, but recently I started to get some issues at the motor not being powerful enough. I switched to 12V (which is in the range of the motor) and didn't have any issue with it yet.
   
 ### Connections
 
