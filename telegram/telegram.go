@@ -42,6 +42,10 @@ func NotifyEvent(evt common.Event) {
 		if evt.Priority == 0 {
 			msg = "✅ "
 		}
-		Notify(msg + "[" + evt.Time.String() + "] " + evt.Message)
+		time := ""
+		if evt.Time != nil {
+			time = " [" + evt.Time.String() + "]"
+		}
+		Notify(msg + time + " " + evt.Message)
 	}
 }
