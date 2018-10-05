@@ -3,7 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://localhost:1313/home/devices/food02/</loc>
+    <lastmod>2018-10-04T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://localhost:1313/home/devices/</loc>
+    <lastmod>2017-06-16T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/devices/food01/</loc>
     <lastmod>2017-06-16T17:45:11+01:00</lastmod>
   </url>
   
@@ -32,8 +42,14 @@
   </url>
   
   <url>
+    <loc>http://localhost:1313/home/devices/</loc>
+    <lastmod>2018-10-04T17:45:11+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://localhost:1313/home/</loc>
-    <lastmod>2017-06-16T17:45:11+01:00</lastmod>
+    <lastmod>2018-10-04T17:45:11+01:00</lastmod>
     <priority>0</priority>
   </url>
   

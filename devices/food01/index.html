@@ -10,47 +10,47 @@
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
     <title>Rabbit feeder - Home Automation project</title>
-    <meta name="generator" content="Hugo 0.21" />
+    <meta name="generator" content="Hugo 0.50-DEV" />
 
     
     <meta name="description" content="Home Automation system.">
     
-    <link rel="canonical" href="https://conejoninja.github.io/home/devices/food01/">
+    <link rel="canonical" href="http://localhost:1313/home/devices/food01/">
     
     <meta name="author" content="conejoninja">
     
 
-    <meta property="og:url" content="https://conejoninja.github.io/home/devices/food01/">
+    <meta property="og:url" content="http://localhost:1313/home/devices/food01/">
     <meta property="og:title" content="Home Automation project">
-    <meta property="og:image" content="https://conejoninja.github.io/home/images/logo.png">
+    <meta property="og:image" content="http://localhost:1313/home/images/logo.png">
     <meta name="apple-mobile-web-app-title" content="Home Automation project">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel="shortcut icon" type="image/x-icon" href="https://conejoninja.github.io/home/images/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="https://conejoninja.github.io/home/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="http://localhost:1313/home/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="http://localhost:1313/home/images/favicon.ico">
 
     <style>
       @font-face {
         font-family: 'Icon';
-        src: url('https://conejoninja.github.io/home/fonts/icon.eot');
-        src: url('https://conejoninja.github.io/home/fonts/icon.eot')
+        src: url('http://localhost:1313/home/fonts/icon.eot');
+        src: url('http://localhost:1313/home/fonts/icon.eot')
                format('embedded-opentype'),
-             url('https://conejoninja.github.io/home/fonts/icon.woff')
+             url('http://localhost:1313/home/fonts/icon.woff')
                format('woff'),
-             url('https://conejoninja.github.io/home/fonts/icon.ttf')
+             url('http://localhost:1313/home/fonts/icon.ttf')
                format('truetype'),
-             url('https://conejoninja.github.io/home/fonts/icon.svg')
+             url('http://localhost:1313/home/fonts/icon.svg')
                format('svg');
         font-weight: normal;
         font-style: normal;
       }
     </style>
 
-    <link rel="stylesheet" href="https://conejoninja.github.io/home/stylesheets/application.css">
-    <link rel="stylesheet" href="https://conejoninja.github.io/home/stylesheets/temporary.css">
-    <link rel="stylesheet" href="https://conejoninja.github.io/home/stylesheets/palettes.css">
-    <link rel="stylesheet" href="https://conejoninja.github.io/home/stylesheets/highlight/highlight.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/application.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/temporary.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/highlight/highlight.css">
 
     
     
@@ -66,7 +66,7 @@
     </style>
 
     
-    <script src="https://conejoninja.github.io/home/javascripts/modernizr.js"></script>
+    <script src="http://localhost:1313/home/javascripts/modernizr.js"></script>
 
     
 
@@ -134,7 +134,7 @@
     <div class="banner">
       
         <div class="logo">
-          <img src="https://conejoninja.github.io/home/images/logo.png">
+          <img src="http://localhost:1313/home/images/logo.png">
         </div>
       
       <div class="name">
@@ -225,6 +225,20 @@
 
   
     <ul>
+      
+        
+        
+
+
+
+
+<a  title="Rabbit feeder v2" href="/home/devices/food02/">
+	
+	Rabbit feeder v2
+</a>
+
+
+
       
         
         
@@ -347,11 +361,11 @@
 <li>L293B / L293D half-bridge</li>
 <li>DC motor (one of those cheap geared yellow motors)</li>
 <li>Rotary encoder</li>
-<li>DC-DC buck converter with 3.3V output (YL-46, AMS1117 based)</li>
+<li>DC-DC buck converter with 3.3V output (YL-46, AMS1117 based) * see note at motor section</li>
 <li>2x 10K ohm resistors</li>
 <li>4x 1N4007</li>
 <li>3D printed parts from STL files</li>
-<li>6V power source</li>
+<li>6V-12 power source</li>
 <li>6x M3 screws and nuts</li>
 <li>Some wire</li>
 <li>Some glue</li>
@@ -361,9 +375,11 @@
 
 <p><img src="https://github.com/conejoninja/home_food/raw/master/circuit.png" alt="the circuit" title="The circuit" /></p>
 
-<p>The DC motor and the L293D/L293B are powered by the 6V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there&rsquo;s a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.</p>
+<p>The DC motor and the L293D/L293B are powered by the 6V-12V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there&rsquo;s a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.</p>
 
 <p>Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn&rsquo;t find Fritzing components for them.</p>
+
+<p>Note: I initially use a 6V power source and it worked fine for a while, but recently I started to get some issues at the motor not being powerful enough. I switched to 12V (which is in the range of the motor) and didn&rsquo;t have any issue with it yet.</p>
 
 <h3 id="connections">Connections</h3>
 
@@ -464,7 +480,7 @@
 
 <h2 id="motor">Motor</h2>
 
-<p>For the first design I used a 360 servo motor I had lying around, it turns out it didn&rsquo;t have enough force and jams from time to time. I ended up using one of the <em>famously cheap</em> yellow dc motors used in several robot kits. These motors take from 3V to 6V, and have enough force for our purpose.</p>
+<p>For the first design I used a 360 servo motor I had lying around, it turns out it didn&rsquo;t have enough force and jams from time to time. I ended up using one of the <em>famously cheap</em> yellow dc motors used in several robot kits. These motors take from 3V to 12V, and have enough force for our purpose*.</p>
 
 <p><img src="https://conejoninja.github.io/home/images/food/motor1.jpg" alt="dc motor" title="dc motor" /></p>
 
@@ -477,6 +493,8 @@
 <p>To control the motor we use a <em>H-bridge</em> with the L293B, you could use a L293D or any other similar component.</p>
 
 <p><img src="https://conejoninja.github.io/home/images/food/hbridge.jpg" alt="h bridge" title="h bridge" /></p>
+
+<p><strong>Note</strong>: After some months of use, the motor seems to not have enough force anymore (probably something got stuck or moved). I changed the DC-DC converter and the power source, now feed 12V to the motor, seems to work fine.</p>
 
 <h2 id="rotary-encoder">Rotary encoder</h2>
 
@@ -514,9 +532,9 @@
 </p>
 
 
-<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/4CCGwA13kiI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
- </div>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/4CCGwA13kiI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
 
 
 <p><strong>Note</strong>: file dish.stl is a bowl/dish for the food, to be use in place of front.cover.stl</p>
@@ -571,7 +589,7 @@
 
 			<aside class="copyright" role="note">
 				
-				&copy; 2017 Released under the MIT license &ndash;
+				&copy; 2018 Released under the MIT license &ndash;
 				
 				Documentation built with
 				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
@@ -585,7 +603,7 @@
 <nav class="pagination" aria-label="Footer">
   <div class="previous">
   
-      <a href="https://conejoninja.github.io/home/devices/" title="Devices">
+      <a href="http://localhost:1313/home/devices/" title="Devices">
         <span class="direction">
           Previous
         </span>
@@ -605,7 +623,7 @@
 
   <div class="next">
   
-      <a href="https://conejoninja.github.io/home/home/" title="Home">
+      <a href="http://localhost:1313/home/home/" title="Home">
         <span class="direction">
           Next
         </span>
@@ -644,12 +662,12 @@
 
     <script>
     
-      var base_url = 'https:\/\/conejoninja.github.io\/home\/';
+      var base_url = 'http:\/\/localhost:1313\/home\/';
       var repo_id  = 'conejoninja\/home';
     
     </script>
 
-    <script src="https://conejoninja.github.io/home/javascripts/application.js"></script>
+    <script src="http://localhost:1313/home/javascripts/application.js"></script>
     
 
     <script>
@@ -694,6 +712,6 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-  </body>
+  <script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
 </html>
 
