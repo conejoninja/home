@@ -1,7 +1,7 @@
 ---
 date: 2017-06-16T17:45:11+01:00
 title: Rabbit feeder v2
-weight: 10
+weight: 11
 menu:
     main:
         parent: devices
