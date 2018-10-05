@@ -10,12 +10,12 @@ menu:
 
 IoT enabled rabbit feeder, automatic and controllable via Internet. 
 
-**Github repository:** https://github.com/conejoninja/home_food
+**Github repository:** https://github.com/conejoninja/home_food          
 
 
 ## Idea and motivation
 
-Learn from the experience and improve the previous versions of the feeder.
+Learn from the experience and improve the [previous versions](https://conejoninja.github.io/home/devices/food01/) of the feeder.
 
 As with the old prototype, the feeder will wake up each 15 minutes, send the temperature and humidity to a server and check if it's time to feed the monsters. It's as autonomous as possible (it will feed them if
 it's time, even if there's no internet connection). The feeder will notify if there's a problem with the temperature and humidity readings or if it's jammed. It could receive a command to dispense extra food even if it's not the time to.

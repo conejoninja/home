@@ -43,7 +43,7 @@ It offer a simple API to access the information of the devices, sensors and even
 
 ## Database
 
-For the database I choose to use [Badger](https://github.com/dgraph-io/badger), Go-native key-value database. 
+For the database I choose to use [Badger](https://github.com/dgraph-io/badger), Go-native key-value database.         
 
 
 ## Dashboard

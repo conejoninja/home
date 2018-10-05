@@ -5,8 +5,7 @@ weight: 20
 ---
 
 Simple protocol to discover and communicate with IoT devices on a network. The devices communicate with each other through the same central server(s) (a single server or a mesh), that may or may not be in the same local network. This makes possible the communication of devices in different physical networks.
- 
- 
+            
 ## Discovery of devices
 
 Devices that join the network will broadcast their description. The message will be send to the **discovery** channel. 

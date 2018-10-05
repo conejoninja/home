@@ -4,7 +4,8 @@ title: Home
 weight: 10
 ---
 
-To log all the sensor data and be able to process it later, we use what we call *Home*. It's written in [Go](http://golang.org/) and made of different configurable *module*. The two principal tasks are to log the sensor data in the *Logger* and serve it via the *API*
+To log all the sensor data and be able to process it later, we use what we call *Home*. It's written in [Go](http://golang.org/) and made of different configurable *module*. The two principal tasks are to log the sensor
+data in the *Logger* and serve it via the *API*.
  
  
 ## Logger

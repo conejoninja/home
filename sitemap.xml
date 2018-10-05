@@ -3,23 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://conejoninja.github.io/home/</loc>
+    <loc>http://localhost:1313/home/devices/</loc>
+    <lastmod>2017-06-16T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/home/</loc>
+    <lastmod>2017-06-12T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/protocol/</loc>
+    <lastmod>2017-06-12T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/</loc>
     <lastmod>2017-06-11T18:28:13+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://conejoninja.github.io/home/categories/</loc>
+    <loc>http://localhost:1313/home/contributing/</loc>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://conejoninja.github.io/home/</loc>
-    <lastmod>2017-06-11T18:28:13+01:00</lastmod>
+    <loc>http://localhost:1313/home/</loc>
+    <lastmod>2017-06-16T17:45:11+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://conejoninja.github.io/home/tags/</loc>
+    <loc>http://localhost:1313/home/tags/</loc>
     <priority>0</priority>
   </url>
   
