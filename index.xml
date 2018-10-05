@@ -2,90 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home Automation project</title>
-    <link>http://localhost:1313/home/</link>
+    <link>https://conejoninja.github.io/home/</link>
     <description>Recent content on Home Automation project</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Oct 2018 17:45:11 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 11 Jun 2017 18:28:13 +0100</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/home/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://conejoninja.github.io/home/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Rabbit feeder v2</title>
-      <link>http://localhost:1313/home/devices/food02/</link>
-      <pubDate>Thu, 04 Oct 2018 17:45:11 +0100</pubDate>
-      
-      <guid>http://localhost:1313/home/devices/food02/</guid>
-      <description>IoT enabled rabbit feeder, automatic and controllable via Internet.
-Github repository: https://github.com/conejoninja/home_food
-Idea and motivation Learn from the experience and improve the previous versions of the feeder.
-As with the old prototype, the feeder will wake up each 15 minutes, send the temperature and humidity to a server and check if it&amp;rsquo;s time to feed the monsters. It&amp;rsquo;s as autonomous as possible (it will feed them if it&amp;rsquo;s time, even if there&amp;rsquo;s no internet connection).</description>
-    </item>
-    
-    <item>
-      <title>Devices</title>
-      <link>http://localhost:1313/home/devices/</link>
-      <pubDate>Fri, 16 Jun 2017 17:45:11 +0100</pubDate>
-      
-      <guid>http://localhost:1313/home/devices/</guid>
-      <description> List of devices connected to the network.
-Devices  Food01: IoT enabled Rabbit feeder, autonomous and controllable via internet. Food02: Second version of the IoT enabled Rabbit feeder, autonomous and controllable via internet.  </description>
-    </item>
-    
-    <item>
-      <title>Rabbit feeder</title>
-      <link>http://localhost:1313/home/devices/food01/</link>
-      <pubDate>Fri, 16 Jun 2017 17:45:11 +0100</pubDate>
-      
-      <guid>http://localhost:1313/home/devices/food01/</guid>
-      <description>IoT enabled rabbit feeder, automatic and controllable via Internet.
-Github repository: https://github.com/conejoninja/home_food
-Idea and motivation The main idea was to be able to feed these two little rascals even when I&amp;rsquo;m not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don&amp;rsquo;t do well on hot weather.</description>
-    </item>
-    
-    <item>
-      <title>Home</title>
-      <link>http://localhost:1313/home/home/</link>
-      <pubDate>Mon, 12 Jun 2017 17:45:11 +0100</pubDate>
-      
-      <guid>http://localhost:1313/home/home/</guid>
-      <description>To log all the sensor data and be able to process it later, we use what we call Home. It&amp;rsquo;s written in Go and made of different configurable module. The two principal tasks are to log the sensor data in the Logger and serve it via the API.
-Logger Source code
-Save sensor data and other information from the MQTT network in a database.
-API Source code
-Create a HTTP server and listen for requests.</description>
-    </item>
-    
-    <item>
-      <title>Protocol</title>
-      <link>http://localhost:1313/home/protocol/</link>
-      <pubDate>Mon, 12 Jun 2017 17:45:11 +0100</pubDate>
-      
-      <guid>http://localhost:1313/home/protocol/</guid>
-      <description>Simple protocol to discover and communicate with IoT devices on a network. The devices communicate with each other through the same central server(s) (a single server or a mesh), that may or may not be in the same local network. This makes possible the communication of devices in different physical networks.
-Discovery of devices Devices that join the network will broadcast their description. The message will be send to the discovery channel.</description>
-    </item>
     
     <item>
       <title>Home Automation project</title>
-      <link>http://localhost:1313/home/</link>
+      <link>https://conejoninja.github.io/home/</link>
       <pubDate>Sun, 11 Jun 2017 18:28:13 +0100</pubDate>
       
-      <guid>http://localhost:1313/home/</guid>
+      <guid>https://conejoninja.github.io/home/</guid>
       <description>Amateur project to automate a few task in my home and communicate with some IoT devices. I used a mix of languages, frameworks and platforms. I will try to document as much as possible, but remember, this is an amateur project.
 Global view In order to interact together, devices communicates with each other through a MQTT server using a custom JSON-based protocol. Besides the devices, there are a few &amp;ldquo;modules&amp;rdquo; too, those modules are programs that consume the MQTT messages, perform actions based of information and allow human interaction (Web, App).</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://localhost:1313/home/contributing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/home/contributing/</guid>
-      <description>Contributing Guidelines Code of Conduct This project is intended to be a safe, welcoming space for collaboration. All contributors are expected to adhere to the Contributor Covenant code of conduct. Thank you for being kind to each other!.
-Contributions welcome! Before spending lots of time on something, ask for feedback on your idea first!
-Please search issues and pull requests (or in any of the related projects) before adding something new!</description>
     </item>
     
   </channel>
