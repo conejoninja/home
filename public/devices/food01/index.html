@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+  
+  
+  
+  
+   <html class="no-js"> 
+
+  <head lang="en-us">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <title>Rabbit feeder - Home Automation project</title>
+    <meta name="generator" content="Hugo 0.50-DEV" />
+
+    
+    <meta name="description" content="Home Automation system.">
+    
+    <link rel="canonical" href="http://localhost:1313/home/devices/food01/">
+    
+    <meta name="author" content="conejoninja">
+    
+
+    <meta property="og:url" content="http://localhost:1313/home/devices/food01/">
+    <meta property="og:title" content="Home Automation project">
+    <meta property="og:image" content="http://localhost:1313/home/images/logo.png">
+    <meta name="apple-mobile-web-app-title" content="Home Automation project">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" type="image/x-icon" href="http://localhost:1313/home/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="http://localhost:1313/home/images/favicon.ico">
+
+    <style>
+      @font-face {
+        font-family: 'Icon';
+        src: url('http://localhost:1313/home/fonts/icon.eot');
+        src: url('http://localhost:1313/home/fonts/icon.eot')
+               format('embedded-opentype'),
+             url('http://localhost:1313/home/fonts/icon.woff')
+               format('woff'),
+             url('http://localhost:1313/home/fonts/icon.ttf')
+               format('truetype'),
+             url('http://localhost:1313/home/fonts/icon.svg')
+               format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/application.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/temporary.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/palettes.css">
+    <link rel="stylesheet" href="http://localhost:1313/home/stylesheets/highlight/highlight.css">
+
+    
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu&#43;Mono">
+    <style>
+      body, input {
+        font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+      }
+      pre, code {
+        font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+      }
+    </style>
+
+    
+    <script src="http://localhost:1313/home/javascripts/modernizr.js"></script>
+
+    
+
+  </head>
+  <body class="palette-primary-blue-grey palette-accent-teal">
+
+
+
+	
+	
+
+
+<div class="backdrop">
+	<div class="backdrop-paper"></div>
+</div>
+
+<input class="toggle" type="checkbox" id="toggle-drawer">
+<input class="toggle" type="checkbox" id="toggle-search">
+<label class="toggle-button overlay" for="toggle-drawer"></label>
+
+<header class="header">
+	<nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        Rabbit feeder
+      </div>
+    </div>
+
+    
+
+    
+    <div class="button button-github" role="button" aria-label="GitHub">
+      <a href="https://github.com/conejoninja" title="@conejoninja on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+    </div>
+    
+    
+        
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+</header>
+
+<main class="main">
+	<div class="drawer">
+		<nav aria-label="Navigation">
+  <a href="https://github.com/conejoninja/home" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="http://localhost:1313/home/images/logo.png">
+        </div>
+      
+      <div class="name">
+        <strong>Home Automation project <span class="version">1.0.0</span></strong>
+        
+          <br>
+          conejoninja/home
+        
+      </div>
+    </div>
+  </a>
+
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            <a href="https://github.com/conejoninja/home/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/conejoninja/home/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+
+      <div class="toc">
+        
+        <ul>
+          
+
+
+
+
+<li>
+  
+
+
+
+
+<a  title="General" href="/home/">
+	
+	General
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+
+
+
+
+<a  title="Home" href="/home/home/">
+	
+	Home
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+
+
+
+
+<a  title="Devices" href="/home/devices/">
+	
+	Devices
+</a>
+
+
+
+  
+    <ul>
+      
+        
+        
+
+
+
+
+<a  title="Rabbit feeder v2" href="/home/devices/food02/">
+	
+	Rabbit feeder v2
+</a>
+
+
+
+      
+        
+        
+
+
+
+
+<a class="current" title="Rabbit feeder" href="/home/devices/food01/">
+	
+	Rabbit feeder
+</a>
+
+
+<ul id="scrollspy">
+</ul>
+
+
+      
+    </ul>
+  
+</li>
+
+
+
+<li>
+  
+
+
+
+
+<a  title="Protocol" href="/home/protocol/">
+	
+	Protocol
+</a>
+
+
+
+  
+</li>
+
+
+
+<li>
+  
+
+
+
+
+<a  title="Contributing" href="/home/contributing/">
+	
+	Contributing
+</a>
+
+
+
+  
+</li>
+
+
+        </ul>
+        
+
+        
+        <hr>
+        <span class="section">The author</span>
+        
+        <ul>
+          
+
+          
+          <li>
+            <a href="https://github.com/conejoninja" target="_blank" title="@conejoninja on GitHub">
+              @conejoninja on GitHub
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="mailto:conejo@conejo.me" title="Email of conejo@conejo.me">
+              Contact via email
+            </a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+	</div>
+
+	<article class="article">
+		<div class="wrapper">
+			<h1>Rabbit feeder </h1>
+
+			
+
+<p>IoT enabled rabbit feeder, automatic and controllable via Internet.</p>
+
+<p><strong>Github repository:</strong> <a href="https://github.com/conejoninja/home_food">https://github.com/conejoninja/home_food</a></p>
+
+<p><img src="https://conejoninja.github.io/home/images/food/food0104.gif" alt="rabbit feeder" title="Rabbit food 01" /></p>
+
+<h2 id="idea-and-motivation">Idea and motivation</h2>
+
+<p>The main idea was to be able to feed these two little rascals even when I&rsquo;m not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don&rsquo;t do well on hot weather.</p>
+
+<p>The feeder will wake up each 15 minutes, send the temperature and humidity to a server and check if it&rsquo;s time to feed the monsters. It&rsquo;s as autonomous as possible (it will feed them if it&rsquo;s time, even if there&rsquo;s no internet connection). The feeder will notify if there&rsquo;s a problem with the temperature and humidity readings or if it&rsquo;s jammed. It could receive a command to dispense extra food even if it&rsquo;s not the time to.</p>
+
+<p><img src="https://conejoninja.github.io/home//images/rabbits.jpg" alt="little rascals" title="Baloo &amp; Moneypenny" /></p>
+
+<h2 id="components">Components</h2>
+
+<ul>
+<li>ESP12F (or any other similar board)</li>
+<li>DS1307 AT24C32 (DS1307 module with 32K EEPROM)</li>
+<li>Temperature &amp; humidity DTH11 sensor (or any DHTXX)</li>
+<li>L293B / L293D half-bridge</li>
+<li>DC motor (one of those cheap geared yellow motors)</li>
+<li>Rotary encoder</li>
+<li>DC-DC buck converter with 3.3V output (YL-46, AMS1117 based) * see note at motor section</li>
+<li>2x 10K ohm resistors</li>
+<li>4x 1N4007</li>
+<li>3D printed parts from STL files</li>
+<li>6V-12 power source</li>
+<li>6x M3 screws and nuts</li>
+<li>Some wire</li>
+<li>Some glue</li>
+</ul>
+
+<h2 id="the-circuit">The circuit</h2>
+
+<p><img src="https://github.com/conejoninja/home_food/raw/master/circuit.png" alt="the circuit" title="The circuit" /></p>
+
+<p>The DC motor and the L293D/L293B are powered by the 6V-12V, any phone charger rated at 5V will work too without any issue, but the motor could definitely use that extra power in case there&rsquo;s a jam in the feeder. From there, the voltage is converted to 3.3V to feed the ESP12F and the rest of components with a DC-DC cheap converter.</p>
+
+<p>Note: I used a L293B instead of the pictured L293D. I also used a DS1307 module with 32k EEPROM memory from ebay, that works at 3.3v instead of the 5v depicted in the image. The DC motor is different too (see more in the motor section). I couldn&rsquo;t find Fritzing components for them.</p>
+
+<p>Note: I initially use a 6V power source and it worked fine for a while, but recently I started to get some issues at the motor not being powerful enough. I switched to 12V (which is in the range of the motor) and didn&rsquo;t have any issue with it yet.</p>
+
+<h3 id="connections">Connections</h3>
+
+<p>In case the diagram is not clear enough, here are the connections of the ESP12F.</p>
+
+<table>
+<thead>
+<tr>
+<th>ESP12F pins</th>
+<th>Component</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>RST</td>
+<td>ESP12F GPIO16 (to be able to deepsleep)</td>
+</tr>
+
+<tr>
+<td>ADC</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>CH_PD / EN</td>
+<td>3.3V</td>
+</tr>
+
+<tr>
+<td>GPIO16</td>
+<td>ESP12F RST</td>
+</tr>
+
+<tr>
+<td>GPIO14</td>
+<td>DHT11 data pin</td>
+</tr>
+
+<tr>
+<td>GPIO12</td>
+<td>Rotary encoder pin A</td>
+</tr>
+
+<tr>
+<td>GPIO13</td>
+<td>Rotary encoder pin B</td>
+</tr>
+
+<tr>
+<td>VCC</td>
+<td>3.3V (from DC-DC converter)</td>
+</tr>
+
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+
+<tr>
+<td>GPIO15</td>
+<td>GND</td>
+</tr>
+
+<tr>
+<td>GPIO2</td>
+<td>L293B IN2</td>
+</tr>
+
+<tr>
+<td>GPIO0</td>
+<td>3.3V</td>
+</tr>
+
+<tr>
+<td>GPIO4</td>
+<td>RTC SDA</td>
+</tr>
+
+<tr>
+<td>GPIO5</td>
+<td>RTC SCL</td>
+</tr>
+
+<tr>
+<td>RXD</td>
+<td>L293B IN1</td>
+</tr>
+
+<tr>
+<td>TXD</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+<p>Due to the limitations of the ESP12F, the RXD pin is used to drive the motor. This will cause some issues is using the Serial to debug the code (it&rsquo;s always on). I tried using pins GPIO9 and GPIO10 that are usually not in the adapter plate, but there are additional limitation using them, and I couldn&rsquo;t make them work. I added a flag in the code to enable/disable the motor/Serial. You can not use the Serial and the motor at the same time, unless you change the pins.</p>
+
+<h2 id="motor">Motor</h2>
+
+<p>For the first design I used a 360 servo motor I had lying around, it turns out it didn&rsquo;t have enough force and jams from time to time. I ended up using one of the <em>famously cheap</em> yellow dc motors used in several robot kits. These motors take from 3V to 12V, and have enough force for our purpose*.</p>
+
+<p><img src="https://conejoninja.github.io/home/images/food/motor1.jpg" alt="dc motor" title="dc motor" /></p>
+
+<p>There&rsquo;s a small bump on one side of the motor enclosure, that side is the good one. The other is attached via a smooth rod and can get loose after a while.</p>
+
+<p><img src="https://conejoninja.github.io/home/images/food/motor2.jpg" alt="dc motor" title="dc motor" /></p>
+
+<p>At code level, to avoid jams we move forward the motor a few miliseconds and then a little bit backwards, we repeat this a few times each time we need to dispense some food. In the case a jam happens (very rare, but it does) and avoid overheating of the motor, we limit the number of times we try to move the motor. If it failed to dispense the desired amount of food, we emit an alert and try to dispense next time we wake up (we don&rsquo;t change the alarm). If we succeed with our task, we set a new alarm for the next day.</p>
+
+<p>To control the motor we use a <em>H-bridge</em> with the L293B, you could use a L293D or any other similar component.</p>
+
+<p><img src="https://conejoninja.github.io/home/images/food/hbridge.jpg" alt="h bridge" title="h bridge" /></p>
+
+<p><strong>Note</strong>: After some months of use, the motor seems to not have enough force anymore (probably something got stuck or moved). I changed the DC-DC converter and the power source, now feed 12V to the motor, seems to work fine.</p>
+
+<h2 id="rotary-encoder">Rotary encoder</h2>
+
+<p><img src="https://conejoninja.github.io/home/images/food/rotary.encoder.jpg" alt="rotary encoder" title="rotary encoder" /></p>
+
+<p>To control if the feeder is jammed or how much food is already served we&rsquo;ll use a rotary encoder. One without a PCB and with the one-side flat knob. The rotary encoder uses interrupts to know when it has moved from one position to another. Check which of the pins on your board support interrupts, in the ESP12F, only the GPIO16 doesn&rsquo;t support them, but it doesn&rsquo;t matter to us since we&rsquo;re using GPIO16 to wake from deepsleep. On regular Arduino boards, only a few pins support them, check <a href="https://www.arduino.cc/en/Reference/AttachInterrupt">this table</a> for more information.</p>
+
+<h2 id="dht11-temperature-and-humidity-sensor">DHT11 - Temperature and humidity sensor</h2>
+
+<p><img src="https://conejoninja.github.io/home/images/food/dht11.jpg" alt="dht11" title="dht11" /></p>
+
+<p>DHT11, DHT22 or DHT21, any of them will work fine. They are cheap, being the DHT11 the cheapest among them, work well on 3.3V and 5V. We&rsquo;ll take 10 readings and calculate the average of both, temperature and humidity, to minimize wrong readings. Some of those readings, the first ones, may fail because the sensor needs to <em>warm up</em>, waiting 1 second between readings allow use to have at least a few good samples.</p>
+
+<h2 id="ds1307-at24c32-rtc-clock-with-eeprom-memory">DS1307 AT24C32 - RTC Clock with EEPROM memory</h2>
+
+<p><img src="https://conejoninja.github.io/home/images/food/ds1307at24c32.jpg" alt="rtc clock" title="RTC Clock" /></p>
+
+<p>We want to keep track of the time to be able to use the <em>alarms</em> and serve food whenever it&rsquo;s time to. We&rsquo;ll use the memory to know if the last time we failed and need to serve food again. Another possibility is to use the network time, but if the wifi is down for whatever reason we&rsquo;ll end up without a valid time.</p>
+
+<p>There could be delays while connecting to the wifi network, or take more time to serve food for whatever reason. With the RTC it&rsquo;s possible to calculate the exact amount of time needed to wake up at the <em>exactly*</em> wanted time (at :00, :15, :30 and :45).</p>
+
+<p><em>*the deepsleep of the ESP12F is a little bit imprecise, it will wake up a few seconds earlier than it should</em></p>
+
+<h2 id="stl-3d-files">STL/3D files</h2>
+
+<p><img src="https://conejoninja.github.io/home/images/food/food0103.jpg" alt="rabbit feeder" title="Rabbit food 01" /></p>
+
+<p>STL files for 3D printing could be found in the <a href="https://github.com/conejoninja/home_food/tree/master/3Dfiles">project repository</a>. They are quite printer-friendly, but supports are needed for a few of them. For everything food-related you should use PLA instead of ABS, as PLA is  Generally Recognized As Safe (GRAS) when used in contact with food by <a href="http://www.sciencedirect.com/science/article/pii/027869159400145E">some studies</a>, but there are a <a href="https://pinshape.com/blog/3d-printing-food-safe/">few things</a> to have in mind.</p>
+
+<p>Looking back, there are a few things I would change from the model. Printing takes some time and I don&rsquo;t like wasting plastic, I made improvements and small modifications using existing parts when possible. For example, the rotary encoder wires are visible, which could be a problem with animals that bite most things at their reach.</p>
+
+<p>Assembling is very easy and straight forward, but I made a video of the disassembling/exploding the model.</p>
+
+<p><br />
+</p>
+
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/4CCGwA13kiI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+
+<p><strong>Note</strong>: file dish.stl is a bowl/dish for the food, to be use in place of front.cover.stl</p>
+
+<h2 id="discovery-json">Discovery JSON</h2>
+
+<p>During discovery, food01 will send the following description message:</p>
+
+<pre><code>{
+    &quot;id&quot;:&quot;food01&quot;,
+    &quot;name&quot;:&quot;Dulicomida 3000&quot;,
+    &quot;version&quot;:&quot;1.0.0&quot;,
+    &quot;out&quot;:[
+        {&quot;id&quot;:&quot;t1&quot;,&quot;name&quot;:&quot;temperature&quot;},
+        {&quot;id&quot;:&quot;h1&quot;,&quot;name&quot;:&quot;humidity&quot;},
+        {&quot;id&quot;:&quot;m1&quot;,&quot;name&quot;:&quot;memory1&quot;},
+        {&quot;id&quot;:&quot;m2&quot;,&quot;name&quot;:&quot;memory2&quot;},
+        {&quot;id&quot;:&quot;m3&quot;,&quot;name&quot;:&quot;alarm1&quot;},
+        {&quot;id&quot;:&quot;m4&quot;,&quot;name&quot;:&quot;alarm2&quot;},
+        {&quot;id&quot;:&quot;m5&quot;,&quot;name&quot;:&quot;bigqty&quot;},
+        {&quot;id&quot;:&quot;m6&quot;,&quot;name&quot;:&quot;smallqty&quot;}
+    ],
+    &quot;methods&quot;:[
+        {&quot;name&quot;:&quot;food&quot;},
+        {&quot;name&quot;:&quot;ping&quot;},
+        {&quot;name&quot;:&quot;setmem&quot;,&quot;params&quot;:[{&quot;name&quot;:&quot;id&quot;},{&quot;name&quot;:&quot;value&quot;}]},
+        {&quot;name&quot;:&quot;getmem&quot;}
+    ]
+}
+</code></pre>
+
+<p>There are 8 output values. m1-m6 are explained in the <a href="#memory">section below</a> and are only updated on request (by a <em>getmem</em> call). t1 (temperature) and h1 (humidity), are sensor data that are update every 15 minutes if an internet connection is available and the MQTT server is working. You could make 4 different request to the device. <em>ping</em> will reply with <em>pong</em> just to check the device is still alive. A <em>food</em> request will dispense a small amount of food. You could change the configuration of the device with <em>setmem</em> and get the actual values in memory with <em>getmem</em>. Since the device is mostly deepsleeping, it will execute the commands the next time it wakes up as long as the MQTT message was marked as persistent. You could send several commands at the same time in the same request, but if you make several request before it wakes up, only the last one will be executed.</p>
+
+<h2 id="memory">Memory</h2>
+
+<p>The rabbit feeder stores some settings (and other data) in a non-volatile memory chip, thanks to the DS1307 AT24C32. It can be configured remotely with the <em>setmem</em> function call, more information in the <a href="/home/protocol/#method-calling-messages">protocol page (method-calling-messages)</a>. There are six different settings:</p>
+
+<ul>
+<li>memory1: unix timestamp (from Jan 1st 2000) for next alarm1 to be executed. Example value: <em>553291190</em></li>
+<li>memory2: unix timestamp (from Jan 1st 2000) for next alarm2 to be executed. Example value: <em>553330790</em></li>
+<li>alarm1: time for the first alarm (big amount of food) in 24h format without symbols. Example value: <em>2030</em> (2030 = 20:30 = 8:30pm)</li>
+<li>alarm2: time for the second alarm (small amount of food) in 24h format without symbols. Example value: <em>2030</em> (745 = 7:45 = 7:45am)</li>
+<li>bigqty: minimum number of steps of the rotary encoder to dispense food for the first alarm</li>
+<li>smallqty: minimum number of steps of the rotary encoder to dispense food for the second alarm</li>
+</ul>
+
+<p><strong>Note</strong>: memory1 and memory2 are the timestamp from the Jan 1st of 2000, you need to substract 946684800 from the <em>real</em> timestamp.
+07/13/2017 @ 7:59pm (UTC) is equivalent to 1499975990 and for the device, it&rsquo;s 553291190.</p>
+
+<p><img src="https://conejoninja.github.io/home/images/food/food0102.jpg" alt="rabbit feeder" title="Rabbit food 01" /></p>
+
+
+			<aside class="copyright" role="note">
+				
+				&copy; 2018 Released under the MIT license &ndash;
+				
+				Documentation built with
+				<a href="https://www.gohugo.io" target="_blank">Hugo</a>
+				using the
+				<a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme.
+			</aside>
+
+			<footer class="footer">
+				
+
+<nav class="pagination" aria-label="Footer">
+  <div class="previous">
+  
+      <a href="http://localhost:1313/home/devices/" title="Devices">
+        <span class="direction">
+          Previous
+        </span>
+        <div class="page">
+          <div class="button button-previous" role="button" aria-label="Previous">
+            <i class="icon icon-back"></i>
+          </div>
+          <div class="stretch">
+            <div class="title">
+              Devices
+            </div>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+
+  <div class="next">
+  
+      <a href="http://localhost:1313/home/home/" title="Home">
+        <span class="direction">
+          Next
+        </span>
+        <div class="page">
+          <div class="stretch">
+            <div class="title">
+              Home
+            </div>
+          </div>
+          <div class="button button-next" role="button" aria-label="Next">
+            <i class="icon icon-forward"></i>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+</nav>
+
+
+
+
+
+			</footer>
+		</div>
+	</article>
+
+	<div class="results" role="status" aria-live="polite">
+		<div class="scrollable">
+			<div class="wrapper">
+				<div class="meta"></div>
+				<div class="list"></div>
+			</div>
+		</div>
+	</div>
+</main>
+
+    <script>
+    
+      var base_url = 'http:\/\/localhost:1313\/home\/';
+      var repo_id  = 'conejoninja\/home';
+    
+    </script>
+
+    <script src="http://localhost:1313/home/javascripts/application.js"></script>
+    
+
+    <script>
+      /* Add headers to scrollspy */
+      var headers   = document.getElementsByTagName("h2");
+      var scrollspy = document.getElementById('scrollspy');
+      console.log("SCROLLSPY", scrollspy);
+      if(scrollspy) {
+        if(headers.length > 0) {
+          for(var i = 0; i < headers.length; i++) {
+            var li = document.createElement("li");
+            li.setAttribute("class", "anchor");
+
+            var a  = document.createElement("a");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", headers[i].innerHTML);
+            a.innerHTML = headers[i].innerHTML;
+
+            li.appendChild(a)
+            scrollspy.appendChild(li);
+          }
+        } else {
+          scrollspy.parentElement.removeChild(scrollspy)
+        }
+
+
+        /* Add permanent link next to the headers */
+        var headers = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+        for(var i = 0; i < headers.length; i++) {
+            var a = document.createElement("a");
+            a.setAttribute("class", "headerlink");
+            a.setAttribute("href", "#" + headers[i].id);
+            a.setAttribute("title", "Permanent link")
+            a.innerHTML = "#";
+            headers[i].appendChild(a);
+        }
+      }
+    </script>
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  <script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>
+

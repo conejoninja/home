@@ -5,7 +5,7 @@ theme = "hugo-material-docs"
 metadataformat = "yaml"
 canonifyurls = false
 googleAnalytics = ""
-publishDir = "."
+publishDir = "public"
 
 
 [params]

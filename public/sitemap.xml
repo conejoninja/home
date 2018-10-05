@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://localhost:1313/home/devices/food02/</loc>
+    <lastmod>2018-10-04T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/devices/</loc>
+    <lastmod>2017-06-16T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/devices/food01/</loc>
+    <lastmod>2017-06-16T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/home/</loc>
+    <lastmod>2017-06-12T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/protocol/</loc>
+    <lastmod>2017-06-12T17:45:11+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/</loc>
+    <lastmod>2017-06-11T18:28:13+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/contributing/</loc>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/devices/</loc>
+    <lastmod>2018-10-04T17:45:11+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/</loc>
+    <lastmod>2018-10-04T17:45:11+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/home/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
