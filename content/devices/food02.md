@@ -1,7 +1,7 @@
 ---
-date: 2017-06-16T17:45:11+01:00
+date: 2018-10-04T17:45:11+01:00
 title: Rabbit feeder v2
-weight: 10
+weight: 9
 menu:
     main:
         parent: devices
@@ -117,7 +117,7 @@ Assembling is very easy and straight forward, but I made a video of it.
 
 ## Discovery JSON
 
-During discovery, food01 will send the following description message:
+During discovery, food02 will send the following description message:
 
 ```
 {
