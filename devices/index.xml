@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Devices on Home Automation project</title>
-    <link>http://localhost:1313/home/devices/</link>
+    <link>https://conejoninja.github.io/home/devices/</link>
     <description>Recent content in Devices on Home Automation project</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 04 Oct 2018 17:45:11 +0100</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/home/devices/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://conejoninja.github.io/home/devices/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Rabbit feeder v2</title>
-      <link>http://localhost:1313/home/devices/food02/</link>
+      <link>https://conejoninja.github.io/home/devices/food02/</link>
       <pubDate>Thu, 04 Oct 2018 17:45:11 +0100</pubDate>
       
-      <guid>http://localhost:1313/home/devices/food02/</guid>
+      <guid>https://conejoninja.github.io/home/devices/food02/</guid>
       <description>IoT enabled rabbit feeder, automatic and controllable via Internet.
 Github repository: https://github.com/conejoninja/home_food
 Idea and motivation Learn from the experience and improve the previous versions of the feeder.
@@ -25,10 +25,10 @@ As with the old prototype, the feeder will wake up each 15 minutes, send the tem
     
     <item>
       <title>Rabbit feeder</title>
-      <link>http://localhost:1313/home/devices/food01/</link>
+      <link>https://conejoninja.github.io/home/devices/food01/</link>
       <pubDate>Fri, 16 Jun 2017 17:45:11 +0100</pubDate>
       
-      <guid>http://localhost:1313/home/devices/food01/</guid>
+      <guid>https://conejoninja.github.io/home/devices/food01/</guid>
       <description>IoT enabled rabbit feeder, automatic and controllable via Internet.
 Github repository: https://github.com/conejoninja/home_food
 Idea and motivation The main idea was to be able to feed these two little rascals even when I&amp;rsquo;m not at home. Twice a day, a small quantity at breakfast and a bigger one for dinner (non-spoiled rabbits are supposed to eat timothy during the day when they are not sleeping). I would like to also measure the temperature in case it gets too hot, since rabbits don&amp;rsquo;t do well on hot weather.</description>

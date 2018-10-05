@@ -122,7 +122,12 @@
       <find>Proto</find>
       <find>smil</find>
       <find>smiley</find>
+      <find>localho</find>
+      <find>http://localhost:1313/</find>
     </findStrings>
+    <replaceStrings>
+      <replace>https://conejoninja.github.io/</replace>
+    </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
     </dirStrings>
@@ -260,12 +265,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1538725981331</updated>
-      <workItem from="1538725982684" duration="4102000" />
+      <workItem from="1538725982684" duration="4347000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4102000" />
+    <option name="totallyTimeSpent" value="4347000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="25" width="1920" height="1055" extended-state="6" />
