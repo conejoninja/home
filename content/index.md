@@ -54,4 +54,7 @@ The dashboar uses the API to consume the information off of the database and sho
 ## Devices
 
 ### Food-01
-Food-01 is a rabbit automatic feeder. It dispenses food twice a day, small quantity on breakfast and a bigger one at dinner time. It communicates the status, if there was any problem during its operation. It accepts an user command to dispense extra food at any given time. It also sends temperature/humidity  
+Food-01 is a rabbit automatic feeder. It dispenses food twice a day, small quantity on breakfast and a bigger one at dinner time. It communicates the status, if there was any problem during its operation. It accepts an user command to dispense extra food at any given time. It also sends temperature/humidity
+
+### Food-02
+Food-02 is the evolution of the first prototype of rabbit automatic feeder. It has the same features as the previous version while including some improvements and being more robust in ddesign.
