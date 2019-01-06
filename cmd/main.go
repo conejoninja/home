@@ -175,6 +175,7 @@ func readConfig() (cfg common.HomeConfig) {
 	tg_enabled_str := os.Getenv("TG_ENABLED")
 	cfg.Tg.Token = os.Getenv("TG_TOKEN")
 	tg_chats_str := os.Getenv("TG_CHATS")
+	cfg.Tg.RTSPSource = os.Getenv("TG_RTSP_SOURCE")
 	if tg_enabled_str == "" {
 		tg_enabled_str = fmt.Sprint(viper.Get("tg_enabled"))
 	}
@@ -183,6 +184,9 @@ func readConfig() (cfg common.HomeConfig) {
 	}
 	if tg_chats_str == "" {
 		tg_chats_str = fmt.Sprint(viper.Get("tg_chats"))
+	}
+	if cfg.Tg.RTSPSource == "" {
+		cfg.Tg.RTSPSource = fmt.Sprint(viper.Get("tg_rtsp_source"))
 	}
 
 	cfg.Tg.Enabled = false

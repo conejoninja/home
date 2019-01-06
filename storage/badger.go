@@ -1,20 +1,16 @@
 package storage
 
 import (
-	"log"
-
-	"os"
-
 	"encoding/json"
-
+	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 	"time"
 
-	"fmt"
-
 	"github.com/conejoninja/home/common"
-	"github.com/dgraph-io/badger/badger"
+	"github.com/dgraph-io/badger"
 )
 
 //Badger type
@@ -23,10 +19,10 @@ type Badger struct {
 	devicesPath string
 	metaPath    string
 	eventsPath  string
-	valuesKV    *badger.KV
-	devicesKV   *badger.KV
-	metaKV      *badger.KV
-	eventsKV    *badger.KV
+	valuesDB    *badger.DB
+	devicesDB   *badger.DB
+	metaDB      *badger.DB
+	eventsDB    *badger.DB
 }
 
 // NewBadger opens and returns a storage
@@ -39,35 +35,35 @@ func NewBadger(path string) *Badger {
 
 	var db Badger
 	db.valuesPath = path + "values"
-	db.valuesKV = openKV(db.valuesPath)
+	db.valuesDB = openDB(db.valuesPath)
 
 	db.devicesPath = path + "devices"
-	db.devicesKV = openKV(db.devicesPath)
+	db.devicesDB = openDB(db.devicesPath)
 
 	db.metaPath = path + "meta"
-	db.metaKV = openKV(db.metaPath)
+	db.metaDB = openDB(db.metaPath)
 
 	db.eventsPath = path + "events"
-	db.eventsKV = openKV(db.eventsPath)
+	db.eventsDB = openDB(db.eventsPath)
 
 	return &db
 }
 
-func openKV(path string) *badger.KV {
-	err := os.MkdirAll(path, 0777)
+func openDB(path string) *badger.DB {
+	err := os.MkdirAll(path+"/", 0777)
 	if err != nil {
 		log.Fatal(err)
-		os.Exit(1)
 	}
 
 	opt := badger.DefaultOptions
 	opt.Dir = path
-	//opt.SyncWrites = true
-	kv, err := badger.NewKV(&opt)
+	opt.ValueDir = path
+	opt.SyncWrites = true
+	db, err := badger.Open(opt)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return kv
+	return db
 }
 
 // Close the storage
@@ -81,7 +77,10 @@ func (db *Badger) AddDevice(id []byte, device common.Device) error {
 	if err != nil {
 		return err
 	}
-	db.devicesKV.Set(id, payload)
+	txn := db.devicesDB.NewTransaction(true)
+	defer txn.Discard()
+	txn.Set(id, payload)
+	txn.Commit()
 	return nil
 }
 
@@ -90,14 +89,24 @@ func (db *Badger) GetDevice(id []byte) common.Device {
 	var device common.Device
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.devicesKV.NewIterator(itrOpt)
+
+	txn := db.devicesDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	for itr.Seek(id); itr.Valid(); itr.Next() {
 		item := itr.Item()
 		if string(id) == string(item.Key()) {
-			err := json.Unmarshal(item.Value(), &device)
+			var value []byte
+			err := item.Value(func(v []byte) error {
+				value = v
+				return nil
+			})
+			if err != nil {
+				return device
+			}
+			err = json.Unmarshal(value, &device)
 			if err != nil {
 				// Do something ?
 			}
@@ -112,10 +121,11 @@ func (db *Badger) GetDevice(id []byte) common.Device {
 func (db *Badger) GetDevices() []common.Device {
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.devicesKV.NewIterator(itrOpt)
+	txn := db.devicesDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	nDevices := 0
 	for itr.Rewind(); itr.Valid(); itr.Next() {
 		nDevices++
@@ -124,7 +134,15 @@ func (db *Badger) GetDevices() []common.Device {
 	nDevices = 0
 	for itr.Rewind(); itr.Valid(); itr.Next() {
 		item := itr.Item()
-		err := json.Unmarshal(item.Value(), &devices[nDevices])
+		var value []byte
+		err := item.Value(func(v []byte) error {
+			value = v
+			return nil
+		})
+		if err != nil {
+			return devices
+		}
+		err = json.Unmarshal(value, &devices[nDevices])
 		if err != nil {
 			// Do something ?
 		}
@@ -147,7 +165,10 @@ func (db *Badger) AddValue(device string, value common.Value) error {
 	if err != nil {
 		return err
 	}
-	db.valuesKV.Set(id, payload)
+	txn := db.valuesDB.NewTransaction(true)
+	defer txn.Discard()
+	txn.Set(id, payload)
+	txn.Commit()
 	return nil
 }
 
@@ -156,14 +177,23 @@ func (db *Badger) GetValue(id []byte) common.Value {
 	var value common.Value
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.valuesKV.NewIterator(itrOpt)
+	txn := db.valuesDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	for itr.Seek(id); itr.Valid(); itr.Next() {
 		item := itr.Item()
+		var itemValue []byte
+		err := item.Value(func(v []byte) error {
+			itemValue = v
+			return nil
+		})
+		if err != nil {
+			return value
+		}
 		if string(id) == string(item.Key()) {
-			err := json.Unmarshal(item.Value(), &value)
+			err := json.Unmarshal(itemValue, &value)
 			if err != nil {
 				// Do something ?
 			}
@@ -179,14 +209,23 @@ func (db *Badger) GetLastValue(id string) common.Value {
 	var value common.Value
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      true,
 	}
-	itr := db.valuesKV.NewIterator(itrOpt)
+	txn := db.valuesDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	for itr.Seek([]byte(id + "-9")); itr.Valid(); itr.Next() {
 		item := itr.Item()
+		var itemValue []byte
+		err := item.Value(func(v []byte) error {
+			itemValue = v
+			return nil
+		})
+		if err != nil {
+			return value
+		}
 		if id == string(item.Key()[:len(id)]) {
-			err := json.Unmarshal(item.Value(), &value)
+			err := json.Unmarshal(itemValue, &value)
 			if err != nil {
 				// Do something ?
 			}
@@ -205,11 +244,11 @@ func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common
 
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.valuesKV.NewIterator(itrOpt)
-
+	txn := db.valuesDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	nValues := 0
 	for itr.Seek(sensor); itr.Valid(); itr.Next() {
 		item := itr.Item()
@@ -224,13 +263,21 @@ func (db *Badger) GetValuesBetweenTime(id string, start, end time.Time) []common
 		}
 	}
 
-	nValuesTotal := (nValues - 1)
+	nValuesTotal := nValues - 1
 	values := make([]common.Value, nValuesTotal)
 	nValues = 0
 	if nValuesTotal > 0 {
 		for itr.Seek(sensor); itr.Valid(); itr.Next() {
 			item := itr.Item()
-			err := json.Unmarshal(item.Value(), &values[nValues])
+			var value []byte
+			err := item.Value(func(v []byte) error {
+				value = v
+				return nil
+			})
+			if err != nil {
+				return values
+			}
+			err = json.Unmarshal(value, &values[nValues])
 			if err != nil {
 				// Do something ?
 			}
@@ -260,7 +307,10 @@ func (db *Badger) AddEvent(id string, evt common.Event) error {
 	if err != nil {
 		return err
 	}
-	db.eventsKV.Set(event, payload)
+	txn := db.eventsDB.NewTransaction(true)
+	defer txn.Discard()
+	txn.Set(event, payload)
+	txn.Commit()
 	return nil
 }
 
@@ -269,14 +319,23 @@ func (db *Badger) GetEvent(id []byte) common.Event {
 	var evt common.Event
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.eventsKV.NewIterator(itrOpt)
+	txn := db.eventsDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	for itr.Seek(id); itr.Valid(); itr.Next() {
 		item := itr.Item()
+		var value []byte
+		err := item.Value(func(v []byte) error {
+			value = v
+			return nil
+		})
+		if err != nil {
+			return evt
+		}
 		if string(id) == string(item.Key()) {
-			err := json.Unmarshal(item.Value(), &evt)
+			err := json.Unmarshal(value, &evt)
 			if err != nil {
 				// Do something ?
 			}
@@ -292,15 +351,24 @@ func (db *Badger) GetLastEvents(id string, count int) []common.Event {
 	evts := make([]common.Event, count)
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      true,
 	}
-	itr := db.eventsKV.NewIterator(itrOpt)
+	txn := db.eventsDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	e := 0
 	for itr.Seek([]byte(id + "-9")); itr.Valid(); itr.Next() {
 		item := itr.Item()
+		var value []byte
+		err := item.Value(func(v []byte) error {
+			value = v
+			return nil
+		})
+		if err != nil {
+			return evts
+		}
 		if string(id) == string(item.Key()[:len(id)]) {
-			err := json.Unmarshal(item.Value(), &evts[e])
+			err := json.Unmarshal(value, &evts[e])
 			if err != nil {
 				// Do something ?
 			}
@@ -319,14 +387,23 @@ func (db *Badger) GetLastEvents(id string, count int) []common.Event {
 func (db *Badger) GetMeta(id []byte) (meta common.Meta) {
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.metaKV.NewIterator(itrOpt)
+	txn := db.metaDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	for itr.Seek(id); itr.Valid(); itr.Next() {
 		item := itr.Item()
+		var value []byte
+		err := item.Value(func(v []byte) error {
+			value = v
+			return nil
+		})
+		if err != nil {
+			return
+		}
 		if string(id) == string(item.Key()) {
-			err := json.Unmarshal(item.Value(), &meta)
+			err := json.Unmarshal(value, &meta)
 			if err != nil {
 				// Do something ?
 			}
@@ -345,11 +422,11 @@ func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common
 
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
-	itr := db.eventsKV.NewIterator(itrOpt)
-
+	txn := db.eventsDB.NewTransaction(true)
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	nEvents := 0
 	for itr.Seek(sensor); itr.Valid(); itr.Next() {
 		item := itr.Item()
@@ -369,7 +446,15 @@ func (db *Badger) GetEventsBetweenTime(id string, start, end time.Time) []common
 	if nEventsTotal > 0 {
 		for itr.Seek(sensor); itr.Valid(); itr.Next() {
 			item := itr.Item()
-			err := json.Unmarshal(item.Value(), &events[nEvents])
+			var value []byte
+			err := item.Value(func(v []byte) error {
+				value = v
+				return nil
+			})
+			if err != nil {
+				return events
+			}
+			err = json.Unmarshal(value, &events[nEvents])
 			if err != nil {
 				// Do something ?
 			}
@@ -389,33 +474,42 @@ func (db *Badger) AddMeta(id []byte, meta common.Meta) error {
 	if err != nil {
 		return err
 	}
-	db.metaKV.Set(id, payload)
+	txn := db.metaDB.NewTransaction(true)
+	defer txn.Discard()
+	txn.Set(id, payload)
+	txn.Commit()
 	return nil
 }
 
-// ListAll lists all the pairs KV of a given type
+// ListAll lists all the pairs DB of a given type
 func (db *Badger) ListAll(what string) {
-
 	itrOpt := badger.IteratorOptions{
 		PrefetchSize: 1000,
-		FetchValues:  true,
 		Reverse:      false,
 	}
 
-	var itr *badger.Iterator
+	var txn *badger.Txn
 	if what == "meta" {
-		itr = db.metaKV.NewIterator(itrOpt)
+		txn = db.metaDB.NewTransaction(true)
 	} else if what == "devices" {
-		itr = db.devicesKV.NewIterator(itrOpt)
+		txn = db.devicesDB.NewTransaction(true)
 	} else if what == "events" {
-		itr = db.eventsKV.NewIterator(itrOpt)
+		txn = db.eventsDB.NewTransaction(true)
 	} else {
-		itr = db.valuesKV.NewIterator(itrOpt)
+		txn = db.valuesDB.NewTransaction(true)
 	}
-
+	defer txn.Discard()
+	itr := txn.NewIterator(itrOpt)
 	for itr.Rewind(); itr.Valid(); itr.Next() {
 		item := itr.Item()
-		fmt.Println(string(item.Key()), " = ", string(item.Value()))
+		var value []byte
+		err := item.Value(func(v []byte) error {
+			value = v
+			return nil
+		})
+		if err != nil {
+			return
+		}
+		fmt.Println(string(item.Key()), " = ", string(value))
 	}
-
 }

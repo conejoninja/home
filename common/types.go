@@ -86,9 +86,10 @@ type APIConfig struct {
 
 // TelegramConfig type
 type TelegramConfig struct {
-	Token   string
-	Chats   []int64
-	Enabled bool
+	Token      string
+	Chats      []int64
+	Enabled    bool
+	RTSPSource string
 }
 
 var floatType = reflect.TypeOf(float64(0))
